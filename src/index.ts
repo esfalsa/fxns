@@ -1,18 +1,21 @@
-/**
- * Welcome to Cloudflare Workers! This is your first worker.
- *
- * - Run `npm run dev` in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your worker in action
- * - Run `npm run deploy` to publish your worker
- *
- * Bind resources to your worker in `wrangler.toml`. After adding bindings, a type definition for the
- * `Env` object can be regenerated with `npm run cf-typegen`.
- *
- * Learn more at https://developers.cloudflare.com/workers/
- */
+import { IttyRouter, StatusError } from 'itty-router';
+import { errorResponse, jsonResponse, nationResponse } from './responses';
+import { nationstates } from './nationstates';
+
+const router = IttyRouter();
+
+router
+	.get('/', () => Response.redirect('https://github.com/esfalsa/fxns', 302))
+	.get('/nation=:nation', async ({ params }) => {
+		return nationResponse(nationstates.nation(params.nation!));
+	})
+	.get('/:nation', async ({ params }) => {
+		return nationResponse(nationstates.nation(params.nation!));
+	})
+	.all('*', () => {
+		throw new StatusError(404);
+	});
 
 export default {
-	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-		return new Response('Hello World!');
-	},
-};
+	fetch: (request, ...args) => router.fetch(request, ...args).catch(errorResponse),
+} satisfies ExportedHandler;
