@@ -11,7 +11,10 @@ export const jsonResponse = async (body: Awaitable<object>) => {
 	});
 };
 
-export const htmlResponse = async (body: Awaitable<string>, init?: ResponseInit) => {
+export const htmlResponse = async (
+	body: Awaitable<string>,
+	init?: ResponseInit,
+) => {
 	return new Response(await body, {
 		headers: {
 			'Content-Type': 'text/html;charset=UTF-8',
@@ -24,12 +27,18 @@ export const htmlResponse = async (body: Awaitable<string>, init?: ResponseInit)
 export const nationResponse = async (nation: Awaitable<Nation>) => {
 	const data = await nation;
 
+	console.log({ data });
+
 	const canonicalURL = `https://www.nationstates.net/nation=${canonicalize(data.name)}`;
 	const fullName = `The ${data.type} of ${data.name}`;
 
-	const admirables = data.admirables.sort(() => 0.5 - Math.random()).slice(0, 3);
+	const admirables = data.admirables
+		.sort(() => 0.5 - Math.random())
+		.slice(0, 3);
 	const population =
-		data.population > 1000 ? `${(data.population / 1000).toFixed(3)} billion` : `${data.population} million`;
+		data.population > 1000 ?
+			`${(data.population / 1000).toFixed(3)} billion`
+		:	`${data.population} million`;
 
 	const description = `${admirables[0]!.charAt(0).toUpperCase() + admirables[0]!.slice(1)}, ${admirables[1]}, and ${admirables[2]} ${data.category} with ${population} ${data.demonymPlural}, notable for its ${data.notable}.`;
 
@@ -69,7 +78,10 @@ export const nationResponse = async (nation: Awaitable<Nation>) => {
 	);
 };
 
-export async function errorResponse(status?: number, body?: Awaitable<string | object>): Promise<Response>;
+export async function errorResponse(
+	status?: number,
+	body?: Awaitable<string | object>,
+): Promise<Response>;
 export async function errorResponse(error: StatusError): Promise<Response>;
 export async function errorResponse(
 	errorOrStatus?: StatusError | number,
