@@ -1,3 +1,5 @@
+import { Awaitable } from './types';
+
 const replacements: Record<string, string> = {
 	'&': '&amp;',
 	'<': '&lt;',
@@ -14,7 +16,7 @@ async function escapeString(str: string) {
 	return str.replace(/[&<>'"]/g, replaceTag);
 }
 
-export async function html(strings: TemplateStringsArray, ...values: any[]) {
+export async function html(strings: TemplateStringsArray, ...values: string[]) {
 	const res: Awaitable<string>[] = [strings[0]!];
 
 	for (const [index, value] of values.entries()) {

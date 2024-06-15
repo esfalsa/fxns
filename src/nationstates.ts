@@ -30,7 +30,7 @@ export const nationstates = {
 				headers: {
 					'User-Agent': userAgent,
 				},
-			}
+			},
 		);
 
 		if (!res.ok) {
@@ -73,7 +73,7 @@ export const nationstates = {
 			},
 			{
 				xmlMode: true,
-			}
+			},
 		);
 
 		for await (const chunk of res.body.pipeThrough(new TextDecoderStream())) {

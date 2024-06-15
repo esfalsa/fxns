@@ -1,5 +1,5 @@
 import { IttyRouter, StatusError } from 'itty-router';
-import { errorResponse, jsonResponse, nationResponse } from './responses';
+import { errorResponse, nationResponse } from './responses';
 import { nationstates } from './nationstates';
 
 const router = IttyRouter();
@@ -17,5 +17,6 @@ router
 	});
 
 export default {
-	fetch: (request, ...args) => router.fetch(request, ...args).catch(errorResponse),
+	fetch: (request, ...args) =>
+		router.fetch(request, ...args).catch(errorResponse),
 } satisfies ExportedHandler;

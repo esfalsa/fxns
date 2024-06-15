@@ -1,6 +1,7 @@
 import { StatusError, error } from 'itty-router';
 import { canonicalize, type Nation } from './nationstates';
 import { html } from './utils';
+import { type Awaitable } from './types';
 
 export const jsonResponse = async (body: Awaitable<object>) => {
 	return new Response(JSON.stringify(await body), {
@@ -10,7 +11,10 @@ export const jsonResponse = async (body: Awaitable<object>) => {
 	});
 };
 
-export const htmlResponse = async (body: Awaitable<string>, init?: ResponseInit) => {
+export const htmlResponse = async (
+	body: Awaitable<string>,
+	init?: ResponseInit,
+) => {
 	return new Response(await body, {
 		headers: {
 			'Content-Type': 'text/html;charset=UTF-8',
@@ -21,12 +25,12 @@ export const htmlResponse = async (body: Awaitable<string>, init?: ResponseInit)
 };
 
 export const nationResponse = async (nation: Awaitable<Nation>) => {
-	let data = await nation;
+	const data = await nation;
 
 	const canonicalURL = `https://www.nationstates.net/nation=${canonicalize(data.name)}`;
 
 	return htmlResponse(
-		await html`<!DOCTYPE html>
+		await html`<!doctype html>
 			<html lang="en">
 				<head>
 					<meta charset="UTF-8" />
@@ -37,7 +41,10 @@ export const nationResponse = async (nation: Awaitable<Nation>) => {
 					<meta name="description" content="${data.category}" />
 
 					<!-- required Open Graph metadata -->
-					<meta property="og:title" content="The ${data.type} of ${data.name}" />
+					<meta
+						property="og:title"
+						content="The ${data.type} of ${data.name}"
+					/>
 					<meta property="og:type" content="website" />
 					<meta property="og:image" content="${data.flag}" />
 					<meta property="og:url" content="${canonicalURL}" />
@@ -53,20 +60,26 @@ export const nationResponse = async (nation: Awaitable<Nation>) => {
 					<meta name="twitter:card" content="summary_large_image" />
 					<meta name="twitter:site" content="@NationStates" />
 					<meta name="twitter:description" content="${data.category}" />
-					<meta name="twitter:title" content="The ${data.type} of ${data.name}" />
+					<meta
+						name="twitter:title"
+						content="The ${data.type} of ${data.name}"
+					/>
 					<meta name="twitter:image" content="${data.flag}" />
 					<meta name="twitter:image:alt" content="Flag of ${data.name}" />
 				</head>
 				<body></body>
-			</html>`
+			</html>`,
 	);
 };
 
-export async function errorResponse(status?: number, body?: Awaitable<string | object>): Promise<Response>;
+export async function errorResponse(
+	status?: number,
+	body?: Awaitable<string | object>,
+): Promise<Response>;
 export async function errorResponse(error: StatusError): Promise<Response>;
 export async function errorResponse(
 	errorOrStatus?: StatusError | number,
-	body?: Awaitable<string | object>
+	body?: Awaitable<string | object>,
 ): Promise<Response> {
 	if (errorOrStatus instanceof Error) {
 		return error(errorOrStatus);
