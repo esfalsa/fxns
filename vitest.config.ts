@@ -9,6 +9,7 @@ export default defineWorkersConfig({
 		},
 		coverage: {
 			provider: 'istanbul',
+			include: ['src/**/*.ts'],
 		},
 	},
 });

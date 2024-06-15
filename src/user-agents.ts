@@ -1,4 +1,4 @@
-// Bot regex taken from FxTwitter
+// Bot regex modified from FxTwitter
 // https://github.com/FixTweet/FxTwitter/blob/df94862d946260d53d03f2d792298648d278598b/src/constants.ts#L23
 //
 // Copyright (c) 2022-2024 dangered wolf and FixTweet contributors
@@ -20,8 +20,8 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-const botRegex =
-	/bot|facebook|embed|got|firefox\/92|firefox\/38|curl|wget|go-http|yahoo|generator|whatsapp|revoltchat|preview|link|proxy|vkshare|images|analyzer|index|crawl|spider|python|cfnetwork|node|mastodon|http\.rb|ruby|bun\/|fiddler|iframely/gi;
+export const botRegex =
+	/bot|facebook|embed|got|firefox\/92|firefox\/38|curl|wget|go-http|yahoo|generator|whatsapp|revoltchat|preview|link|proxy|vkshare|images|analyzer|index|crawl|spider|python|cfnetwork|node|mastodon|http\.rb|ruby|bun\/|fiddler|iframely|discourse/i;
 
 export function isBot(userAgent: string) {
 	return botRegex.test(userAgent);
