@@ -1,6 +1,6 @@
 import { StatusError, error } from 'itty-router';
 import { canonicalize, type Nation } from './nationstates';
-import { html } from './utils';
+import { html } from './escaping';
 import { Awaitable } from './types';
 
 export const jsonResponse = async (body: Awaitable<object>) => {
