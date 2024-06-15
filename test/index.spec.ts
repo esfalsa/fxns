@@ -1,8 +1,6 @@
 import { SELF } from 'cloudflare:test';
 import { describe, it, expect } from 'vitest';
 
-console.log(SELF);
-
 describe('healthcheck (/)', async () => {
 	const res = await SELF.fetch('https://example.com', { redirect: 'manual' });
 

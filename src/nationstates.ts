@@ -12,19 +12,34 @@ function endpoint(params: Record<string, string>) {
 	return base + '?' + res.join('&');
 }
 
-export type Nation = {
-	name: string;
-	type: string;
-	category: string;
-	flag: string;
-};
+const shards = {
+	NAME: { propertyName: 'name', shardName: 'name' },
+	TYPE: { propertyName: 'type', shardName: 'type' },
+	CATEGORY: { propertyName: 'category', shardName: 'category' },
+	FLAG: { propertyName: 'flag', shardName: 'flag' },
+	POPULATION: { propertyName: 'population', shardName: 'population' },
+	DEMONYM2PLURAL: { propertyName: 'demonymPlural', shardName: 'demonym2plural' },
+	NOTABLE: { propertyName: 'notable', shardName: 'notable' },
+	ADMIRABLE: { propertyName: 'admirables', shardName: 'admirables' },
+} as const;
+
+type ShardTag = keyof typeof shards;
+type ShardProperty = (typeof shards)[ShardTag]['propertyName'];
+type ShardValue<S extends ShardProperty> =
+	S extends 'population' ? number
+	: S extends 'admirables' ? string[]
+	: string;
+
+export type Nation = { [P in ShardProperty]: ShardValue<P> };
 
 export const nationstates = {
 	async nation(nation: string) {
 		const res = await fetch(
 			endpoint({
 				nation,
-				q: 'name+type+category+flag',
+				q: Object.values(shards)
+					.map(({ shardName }) => shardName)
+					.join('+'),
 			}),
 			{
 				headers: {
@@ -41,33 +56,40 @@ export const nationstates = {
 			throw new StatusError(500);
 		}
 
-		const data: Partial<Nation> = {};
-		let state: keyof Nation | null = null;
+		// we store text from the response as strings so that we can easiily
+		// concatenate them if they are split across multiple chunks
+		const data: Record<ShardProperty, string> = {
+			name: '',
+			type: '',
+			category: '',
+			flag: '',
+			population: '',
+			demonymPlural: '',
+			notable: '',
+			admirables: '',
+		};
+		let state: ShardProperty | null = null;
 
 		const nationParser = new Parser(
 			{
 				onopentag(name) {
-					switch (name) {
-						case 'NAME':
-							state = 'name';
-							break;
-						case 'TYPE':
-							state = 'type';
-							break;
-						case 'CATEGORY':
-							state = 'category';
-							break;
-						case 'FLAG':
-							state = 'flag';
-							break;
+					if (name in shards) {
+						state = shards[name as ShardTag].propertyName;
 					}
 				},
 				ontext(text) {
-					if (state) {
-						data[state] = text;
+					if (!state) {
+						return;
 					}
+
+					data[state] += text;
 				},
 				onclosetag() {
+					// separate admirals with a comma so we can split it later
+					if (state === 'admirables') {
+						data[state] += ',';
+					}
+
 					state = null;
 				},
 			},
@@ -82,7 +104,16 @@ export const nationstates = {
 
 		nationParser.end();
 
-		return data as Nation;
+		return {
+			name: data.name,
+			type: data.type,
+			category: data.category,
+			flag: data.flag,
+			population: Number(data.population),
+			demonymPlural: data.demonymPlural,
+			notable: data.notable,
+			admirables: data.admirables.split(',').slice(0, -1),
+		} satisfies Nation;
 	},
 };
 
