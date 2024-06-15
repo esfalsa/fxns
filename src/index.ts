@@ -1,16 +1,33 @@
 import { IttyRouter, StatusError } from 'itty-router';
 import { errorResponse, nationResponse } from './responses';
-import { nationstates } from './nationstates';
+import { canonicalize, nationstates } from './nationstates';
+import { isBot } from './user-agents';
 
 const router = IttyRouter();
 
 router
 	.get('/', () => Response.redirect('https://github.com/esfalsa/fxns', 302))
-	.get('/nation=:nation', async ({ params }) => {
-		return nationResponse(nationstates.nation(params.nation!));
+	.get('/nation=:nation', async ({ params, headers }) => {
+		const userAgent = headers.get('User-Agent');
+		if (!userAgent || isBot(userAgent)) {
+			return nationResponse(nationstates.nation(params.nation!));
+		}
+
+		return Response.redirect(
+			`https://www.nationstates.net/nation=${canonicalize(params.nation!)}`,
+			302,
+		);
 	})
-	.get('/:nation', async ({ params }) => {
-		return nationResponse(nationstates.nation(params.nation!));
+	.get('/:nation', async ({ params, headers }) => {
+		const userAgent = headers.get('User-Agent');
+		if (!userAgent || isBot(userAgent)) {
+			return nationResponse(nationstates.nation(params.nation!));
+		}
+
+		return Response.redirect(
+			`https://www.nationstates.net/nation=${canonicalize(params.nation!)}`,
+			302,
+		);
 	})
 	.all('*', () => {
 		throw new StatusError(404);
