@@ -58,8 +58,6 @@ export const nationstates = {
 		const parser = new NationParser();
 		await parser.writeStream(res.body);
 
-		console.log({ parser, data: parser.getData() });
-
 		return parser.getData() as Nation;
 	},
 };

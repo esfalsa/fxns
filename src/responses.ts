@@ -27,8 +27,6 @@ export const htmlResponse = async (
 export const nationResponse = async (nation: Awaitable<Nation>) => {
 	const data = await nation;
 
-	console.log({ data });
-
 	const canonicalURL = `https://www.nationstates.net/nation=${canonicalize(data.name)}`;
 	const fullName = `The ${data.type} of ${data.name}`;
 
@@ -43,7 +41,7 @@ export const nationResponse = async (nation: Awaitable<Nation>) => {
 	const description = `${admirables[0]!.charAt(0).toUpperCase() + admirables[0]!.slice(1)}, ${admirables[1]}, and ${admirables[2]} ${data.category} with ${population} ${data.demonymPlural}, notable for its ${data.notable}.`;
 
 	return htmlResponse(
-		await html` <!doctype html>
+		await html`<!doctype html>
 			<html lang="en">
 				<head>
 					<meta charset="UTF-8" />
@@ -64,6 +62,9 @@ export const nationResponse = async (nation: Awaitable<Nation>) => {
 
 					<!-- structured properties Open Graph metadata -->
 					<meta property="og:image:alt" content="Flag of ${data.name}" />
+
+					<!-- non-standard Open Graph metadata -->
+					<meta property="og:ignore_canonical" content="true" />
 
 					<!-- Twitter metadata -->
 					<meta name="twitter:card" content="summary_large_image" />

@@ -50,7 +50,6 @@ export class NationParser {
 
 	async writeStream(stream: ReadableStream<Uint8Array>) {
 		for await (const chunk of stream.pipeThrough(new TextDecoderStream())) {
-			// console.log({ chunk, data: this.data });
 			this.parser.write(chunk);
 		}
 		this.parser.end();
