@@ -8,7 +8,7 @@
 		"dev": "wrangler dev",
 		"start": "wrangler dev",
 		"build": "rollup -c",
-		"test": "vitest --run --coverage",
+		"test": "vitest --run",
 		"test:watch": "vitest",
 		"test:ui": "vitest --ui --coverage",
 		"format": "prettier --write .",
@@ -35,7 +35,7 @@
 		"rollup-plugin-esbuild": "^6.1.1",
 		"typescript": "^5.5.2",
 		"typescript-eslint": "^8.0.0-alpha.30",
-		"vitest": "1.6.0",
+		"vitest": "~1.5.0",
 		"wrangler": "^3.61.0"
 	},
 	"packageManager": "pnpm@9.3.0+sha512.ee7b93e0c2bd11409c6424f92b866f31d3ea1bef5fbe47d3c7500cdc3c9668833d2e55681ad66df5b640c61fa9dc25d546efa54d76d7f8bf54b13614ac293631"

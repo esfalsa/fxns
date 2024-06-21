@@ -1,5 +1,10 @@
 import { StatusError } from 'itty-router';
-import { NationParser, RegionParser, type GenericParser } from './parsers';
+import {
+	NationParser,
+	ProposalsParser,
+	RegionParser,
+	type GenericParser,
+} from './parsers';
 import { shardTags, type EndpointType } from './shards';
 
 const base = 'https://www.nationstates.net/cgi-bin/api.cgi';
@@ -25,6 +30,17 @@ export const nationstates = {
 		return await this.fetch<'region'>(
 			endpoint({ region, q: Object.values(shardTags.region).join('+') }),
 			new RegionParser(),
+		);
+	},
+
+	async proposal(id: string) {
+		return await this.fetch<'proposals'>(
+			// apparent an empty value for the `wa` parameter returns data from both
+			// the GA and SC, letting us avoid making two separate requests since the
+			// URL of a proposal on NationStates includes only the proposal ID and
+			// not which chamber it was proposed in.
+			endpoint({ wa: '', q: 'proposals' }),
+			new ProposalsParser(id),
 		);
 	},
 

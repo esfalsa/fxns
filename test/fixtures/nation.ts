@@ -1,4 +1,4 @@
-export const nationXML = `<NATION id="esfalsa">
+export const nationXML = /* xml */ `<NATION id="esfalsa">
 <NAME>Esfalsa</NAME>
 <TYPE>Flagless Nation</TYPE>
 <CATEGORY>Civil Rights Lovefest</CATEGORY>
