@@ -3,14 +3,6 @@ import { canonicalize, type Nation } from './nationstates';
 import { html } from './escaping';
 import { Awaitable } from './types';
 
-export const jsonResponse = async (body: Awaitable<object>) => {
-	return new Response(JSON.stringify(await body), {
-		headers: {
-			'Content-Type': 'application/json;charset=UTF-8',
-		},
-	});
-};
-
 export const htmlResponse = async (
 	body: Awaitable<string>,
 	init?: ResponseInit,
@@ -76,6 +68,24 @@ export const nationResponse = async (nation: Awaitable<Nation>) => {
 				</head>
 				<body></body>
 			</html>`,
+		{
+			headers: {
+				'Cache-Control': 'max-age=86400, must-revalidate',
+			},
+		},
+	);
+};
+
+export const nationStatesRedirectResponse = async (
+	url: Awaitable<ConstructorParameters<typeof URL>[0]>,
+	status?: Awaitable<number>,
+) => {
+	return Response.redirect(
+		Object.assign<URL, { [K in keyof URL]?: URL[K] }>(new URL(await url), {
+			hostname: 'www.nationstates.net',
+			protocol: 'https:',
+		}).href,
+		await status,
 	);
 };
 

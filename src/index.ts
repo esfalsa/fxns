@@ -1,5 +1,9 @@
 import { IttyRouter, StatusError } from 'itty-router';
-import { errorResponse, nationResponse } from './responses';
+import {
+	errorResponse,
+	nationResponse,
+	nationStatesRedirectResponse,
+} from './responses';
 import { canonicalize, nationstates } from './nationstates';
 import { isBot } from './user-agents';
 
@@ -7,6 +11,9 @@ const router = IttyRouter();
 
 router
 	.get('/', () => Response.redirect('https://github.com/esfalsa/fxns', 302))
+	.get('/favicon*', (req) => nationStatesRedirectResponse(req.url, 301))
+	.get('/apple-touch-*', (req) => nationStatesRedirectResponse(req.url, 301))
+	.get('/android-chrome-*', (req) => nationStatesRedirectResponse(req.url, 301))
 	.get('/nation=:nation', async ({ params, headers }) => {
 		const userAgent = headers.get('User-Agent');
 		if (!userAgent || isBot(userAgent)) {
