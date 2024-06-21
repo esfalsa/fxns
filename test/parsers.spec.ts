@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { NationParser } from '../src/parsers';
-import { Nation } from '../src/nationstates';
+import type { Nation } from '../src/shards';
 import { nationXML } from './fixtures/nation';
 
 describe('NationParser', () => {
@@ -12,14 +12,13 @@ describe('NationParser', () => {
 				controller.close();
 			},
 		});
-		await parser.writeStream(stream);
 
-		expect(parser.getData()).toEqual({
+		expect(await parser.parseStream(stream)).toEqual({
 			name: 'Esfalsa',
 			type: 'Flagless Nation',
 			category: 'Civil Rights Lovefest',
 			population: 18028,
-			demonymPlural: 'Esfalsans',
+			demonym2plural: 'Esfalsans',
 			flag: 'https://www.nationstates.net/images/flags/uploads/esfalsa__372439.svg',
 			admirables: [
 				'cultured',
@@ -34,7 +33,20 @@ describe('NationParser', () => {
 		} satisfies Nation);
 	});
 
-	it('parses chunked data', async () => {
+	it('resets parser state while parsing', () => {
+		const parser = new NationParser();
+		const chunks = nationXML.match(/.{1,10}/g)!;
+
+		for (const chunk of chunks.slice(0, chunks.length / 2)) {
+			parser.write(chunk);
+		}
+
+		expect(parser.data).not.toEqual({});
+		parser.reset();
+		expect(parser.data).toEqual({});
+	});
+
+	it('parses chunked data', () => {
 		const parser = new NationParser();
 		const chunks = nationXML.match(/.{1,10}/g)!;
 
@@ -44,12 +56,12 @@ describe('NationParser', () => {
 
 		parser.end();
 
-		expect(parser.getData()).toEqual({
+		expect(parser.data).toEqual({
 			name: 'Esfalsa',
 			type: 'Flagless Nation',
 			category: 'Civil Rights Lovefest',
 			population: 18028,
-			demonymPlural: 'Esfalsans',
+			demonym2plural: 'Esfalsans',
 			flag: 'https://www.nationstates.net/images/flags/uploads/esfalsa__372439.svg',
 			admirables: [
 				'cultured',

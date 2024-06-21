@@ -1,5 +1,6 @@
 import { StatusError } from 'itty-router';
-import { NationParser } from './parsers';
+import { NationParser, RegionParser, type GenericParser } from './parsers';
+import { shardTags, type EndpointType } from './shards';
 
 const base = 'https://www.nationstates.net/cgi-bin/api.cgi';
 const userAgent = 'fxns/0.1.0 (by:Esfalsa)';
@@ -12,37 +13,30 @@ function endpoint(params: Record<string, string>) {
 	return base + '?' + res.join('&');
 }
 
-export const shards = {
-	NAME: { propertyName: 'name', shardName: 'name' },
-	TYPE: { propertyName: 'type', shardName: 'type' },
-	CATEGORY: { propertyName: 'category', shardName: 'category' },
-	FLAG: { propertyName: 'flag', shardName: 'flag' },
-	POPULATION: { propertyName: 'population', shardName: 'population' },
-	DEMONYM2PLURAL: {
-		propertyName: 'demonymPlural',
-		shardName: 'demonym2plural',
-	},
-	NOTABLE: { propertyName: 'notable', shardName: 'notable' },
-	ADMIRABLE: { propertyName: 'admirables', shardName: 'admirables' },
-} as const;
-
-export type ShardTag = keyof typeof shards;
-export type ShardProperty = (typeof shards)[ShardTag]['propertyName'];
-export type ShardValue<S extends ShardProperty> =
-	S extends 'population' ? number
-	: S extends 'admirables' ? string[]
-	: string;
-
-export type Nation = { [P in ShardProperty]: ShardValue<P> };
-
-const serializedShards = Object.values(shards)
-	.map(({ shardName }) => shardName)
-	.join('+');
-
 export const nationstates = {
 	async nation(nation: string) {
-		const res = await fetch(endpoint({ nation, q: serializedShards }), {
+		return await this.fetch<'nation'>(
+			endpoint({ nation, q: Object.values(shardTags.nation).join('+') }),
+			new NationParser(),
+		);
+	},
+
+	async region(region: string) {
+		return await this.fetch<'region'>(
+			endpoint({ region, q: Object.values(shardTags.region).join('+') }),
+			new RegionParser(),
+		);
+	},
+
+	async fetch<T extends EndpointType>(
+		endpoint: Parameters<typeof fetch>[0],
+		parser: GenericParser<T>,
+		options?: Parameters<typeof fetch>[1],
+	) {
+		const res = await fetch(endpoint, {
+			...options,
 			headers: {
+				...options?.headers,
 				'User-Agent': userAgent,
 			},
 		});
@@ -55,10 +49,11 @@ export const nationstates = {
 			throw new StatusError(500);
 		}
 
-		const parser = new NationParser();
-		await parser.writeStream(res.body);
-
-		return parser.getData() as Nation;
+		// the `body` of a fetch response should be a `ReadableStream<Uint8Array>`
+		// when read incrementally (see https://fetch.spec.whatwg.org/#bodies).
+		// while the TypeScript DOM library types it as such,
+		// `@cloudflare/workers-types` doesn't, but this seems to work fine.
+		return parser.parseStream(res.body as ReadableStream<Uint8Array>);
 	},
 };
 

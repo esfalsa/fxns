@@ -1,7 +1,9 @@
-import { StatusError, error } from 'itty-router';
-import { canonicalize, type Nation } from './nationstates';
+import type { StatusError} from 'itty-router';
+import { error } from 'itty-router';
+import { canonicalize } from './nationstates';
+import type { Nation } from './shards';
 import { html } from './escaping';
-import { Awaitable } from './types';
+import type { Awaitable } from './types';
 
 export const htmlResponse = async (
 	body: Awaitable<string>,
@@ -30,7 +32,7 @@ export const nationResponse = async (nation: Awaitable<Nation>) => {
 			`${(data.population / 1000).toFixed(3)} billion`
 		:	`${data.population} million`;
 
-	const description = `${admirables[0]!.charAt(0).toUpperCase() + admirables[0]!.slice(1)}, ${admirables[1]}, and ${admirables[2]} ${data.category} with ${population} ${data.demonymPlural}, notable for its ${data.notable}.`;
+	const description = `${admirables[0]!.charAt(0).toUpperCase() + admirables[0]!.slice(1)}, ${admirables[1]}, and ${admirables[2]} ${data.category} with ${population} ${data.demonym2plural}, notable for its ${data.notable}.`;
 
 	return htmlResponse(
 		await html`<!doctype html>

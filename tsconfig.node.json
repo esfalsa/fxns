@@ -1,7 +1,7 @@
 {
 	"extends": "./tsconfig.json",
 	"include": [],
-	"files": ["vitest.config.ts"],
+	"files": ["vitest.config.ts", "eslint.config.mjs", "rollup.config.js"],
 	"compilerOptions": {
 		"types": []
 	}

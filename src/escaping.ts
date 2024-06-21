@@ -1,4 +1,4 @@
-import { Awaitable } from './types';
+import type { Awaitable } from './types';
 
 const replacements: Record<string, string> = {
 	'&': '&amp;',
@@ -12,7 +12,7 @@ function replaceTag(tag: string) {
 	return replacements[tag] || tag;
 }
 
-async function escapeString(str: string) {
+function escapeString(str: string) {
 	return str.replace(/[&<>'"]/g, replaceTag);
 }
 
