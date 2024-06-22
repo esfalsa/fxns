@@ -43,15 +43,14 @@ export abstract class GenericParser<T extends EndpointType> {
 
 	constructor(endpoint: T, options: ParserOptions<T> = {}) {
 		this.options = options;
-		this._data = structuredClone(this.options.initialData || {});
+		this._data = this.options.initialData || {};
 		this.inRoot = !options.rootOpenMatcher; // start parsing if no root matcher
 		this.parser = new XMLParser(
 			{
 				onopentag: (name, attribs) => {
 					// if we are not in a root element, check if we should start parsing
 					if (!this.inRoot) {
-						this.inRoot =
-							this.options.rootOpenMatcher?.(name, attribs) ?? false;
+						this.inRoot = this.options.rootOpenMatcher!(name, attribs);
 						return;
 					}
 
@@ -60,7 +59,7 @@ export abstract class GenericParser<T extends EndpointType> {
 					}
 				},
 				ontext: (text) => {
-					if (this.state) {
+					if (this.inRoot && this.state) {
 						this.currentText += text;
 					}
 				},
@@ -98,13 +97,9 @@ export abstract class GenericParser<T extends EndpointType> {
 		this.parser.end();
 	}
 
-	async parseStream(
-		stream: ReadableStream<Uint8Array>,
-	): Promise<ShardObject<T>> {
-		this.reset();
-		for await (const chunk of stream.pipeThrough(new TextDecoderStream())) {
-			this.parser.write(chunk);
-		}
+	parseString(str: string): ShardObject<T> {
+		// this.reset();
+		this.parser.write(str);
 		this.parser.end();
 		return this._data as ShardObject<T>;
 	}
@@ -114,7 +109,7 @@ export abstract class GenericParser<T extends EndpointType> {
 	 */
 	reset() {
 		this.parser.reset();
-		this._data = structuredClone(this.options.initialData || {});
+		this._data = this.options.initialData || {};
 		this.state = null;
 		this.currentText = '';
 	}

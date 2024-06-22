@@ -7,6 +7,9 @@ import {
 } from './responses';
 import { canonicalize, nationstates } from './nationstates';
 import { isBot } from './user-agents';
+import { ProposalsParser } from './parsers';
+
+import { proposalsXML } from '../test/fixtures/proposals';
 
 const router = IttyRouter();
 
@@ -34,6 +37,11 @@ router
 			`https://www.nationstates.net/page=UN_view_proposal/id=${params.id}`,
 			302,
 		);
+	})
+	.get('/static-test-page', () => {
+		const parser = new ProposalsParser('westinor_1718510253');
+		const data = parser.parseString(proposalsXML);
+		return proposalResponse(data, 'westinor_1718510253');
 	})
 	.get('/:nation', async ({ params, headers }) => {
 		const userAgent = headers.get('User-Agent');

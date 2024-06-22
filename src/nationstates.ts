@@ -61,15 +61,11 @@ export const nationstates = {
 			throw new StatusError(res.status);
 		}
 
-		if (!res.body) {
-			throw new StatusError(500);
-		}
-
 		// the `body` of a fetch response should be a `ReadableStream<Uint8Array>`
 		// when read incrementally (see https://fetch.spec.whatwg.org/#bodies).
 		// while the TypeScript DOM library types it as such,
 		// `@cloudflare/workers-types` doesn't, but this seems to work fine.
-		return parser.parseStream(res.body as ReadableStream<Uint8Array>);
+		return parser.parseString(await res.text());
 	},
 };
 

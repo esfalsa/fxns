@@ -65,9 +65,6 @@ async function formatResponse(
 export const nationResponse = async (nation: Awaitable<Nation>) => {
 	const data = await nation;
 
-	const canonicalURL = `https://www.nationstates.net/nation=${canonicalize(data.name)}`;
-	const fullName = `The ${data.type} of ${data.name}`;
-
 	const admirables = data.admirables
 		.sort(() => 0.5 - Math.random())
 		.slice(0, 3);
@@ -80,8 +77,8 @@ export const nationResponse = async (nation: Awaitable<Nation>) => {
 
 	return htmlResponse(
 		formatResponse(
-			canonicalURL,
-			fullName,
+			`https://www.nationstates.net/nation=${canonicalize(data.name)}`,
+			`The ${data.type} of ${data.name}`,
 			description,
 			data.flag,
 			`Flag of ${data.name}`,
@@ -100,11 +97,9 @@ export const proposalResponse = async (
 ) => {
 	const data = await proposal;
 
-	const canonicalURL = `https://www.nationstates.net/page=UN_view_proposal/id=${id}`;
-
 	return htmlResponse(
 		formatResponse(
-			canonicalURL,
+			`https://www.nationstates.net/page=UN_view_proposal/id=${id}`,
 			`Proposal | ${data.name}`,
 			`A ${data.category} proposal by ${data.proposedBy} created on ${data.created.toLocaleDateString('en-US')} with ${data.approvals.length} approvals.\n\nLegal: ${data.legal.length} | Illegal: ${data.illegal.length} | Discard: ${data.discard.length}`,
 			'https://www.nationstates.net/images/waflag.svg',
