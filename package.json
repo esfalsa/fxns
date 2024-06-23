@@ -35,6 +35,7 @@
 		"rollup-plugin-esbuild": "^6.1.1",
 		"typescript": "^5.5.2",
 		"typescript-eslint": "^8.0.0-alpha.30",
+		"unplugin-parcel-macros": "^0.0.3",
 		"vitest": "~1.5.0",
 		"wrangler": "^3.61.0"
 	},

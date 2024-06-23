@@ -7,9 +7,8 @@ import {
 } from './responses';
 import { canonicalize, nationstates } from './nationstates';
 import { isBot } from './user-agents';
-import { ProposalsParser } from './parsers';
-
 import { proposalsXML } from '../test/fixtures/proposals';
+import { parseProposal } from './parsers';
 
 const router = IttyRouter();
 
@@ -39,9 +38,10 @@ router
 		);
 	})
 	.get('/static-test-page', () => {
-		const parser = new ProposalsParser('westinor_1718510253');
-		const data = parser.parseString(proposalsXML);
-		return proposalResponse(data, 'westinor_1718510253');
+		const id = 'westinor_1718510253';
+		const proposal = parseProposal(proposalsXML, id);
+		if (!proposal) throw new StatusError(404);
+		return proposalResponse(proposal, id);
 	})
 	.get('/:nation', async ({ params, headers }) => {
 		const userAgent = headers.get('User-Agent');
