@@ -1,5 +1,8 @@
 import type { Awaitable } from './types';
 
+type HTMLEscaped = { escaped: true };
+type EscapedString = string & HTMLEscaped;
+
 const replacements: Record<string, string> = {
 	'&': '&amp;',
 	'<': '&lt;',
@@ -16,12 +19,25 @@ function escapeString(str: string) {
 	return str.replace(/[&<>'"]/g, replaceTag);
 }
 
-export async function html(strings: TemplateStringsArray, ...values: string[]) {
+export function html(
+	strings: TemplateStringsArray,
+	...values: (string | EscapedString)[]
+) {
 	const res: Awaitable<string>[] = [strings[0]!];
 
 	for (const [index, value] of values.entries()) {
-		res.push(escapeString(value.toString()), strings[index + 1]!);
+		if ((value as EscapedString).escaped) {
+			res.push(value.toString(), strings[index + 1]!);
+		} else {
+			res.push(escapeString(value.toString()), strings[index + 1]!);
+		}
 	}
 
-	return await Promise.all(res).then((res) => res.join(''));
+	return res.join('');
+}
+
+export function raw(value: string) {
+	const escapedString = new String(value) as EscapedString;
+	escapedString.escaped = true;
+	return escapedString;
 }

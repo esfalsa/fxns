@@ -90,7 +90,7 @@ export function parseProposal(xml: string, id: string) {
 				proposal.category = match.groups.content;
 				break;
 			case 'CREATED':
-				proposal.created = new Date(match.groups.content);
+				proposal.created = new Date(Number(match.groups.content) * 1000);
 				break;
 			case 'PROPOSED_BY':
 				proposal.proposedBy = match.groups.content;
