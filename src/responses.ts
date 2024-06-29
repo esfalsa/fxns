@@ -83,11 +83,6 @@ export const nationResponse = async (nation: Awaitable<Nation>) => {
 			data.flag,
 			`Flag of ${data.name}`,
 		),
-		{
-			headers: {
-				'Cache-Control': 'max-age=86400, must-revalidate',
-			},
-		},
 	);
 };
 
@@ -105,9 +100,6 @@ export const proposalResponse = async (
 			'https://www.nationstates.net/images/waflag.svg',
 			'World Assembly logo',
 		),
-		{
-			headers: { 'Cache-Control': 'max-age=86400, must-revalidate' },
-		},
 	);
 };
 
