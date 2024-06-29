@@ -39,5 +39,12 @@
 		"vitest": "~1.5.0",
 		"wrangler": "^3.61.0"
 	},
-	"packageManager": "pnpm@9.3.0+sha512.ee7b93e0c2bd11409c6424f92b866f31d3ea1bef5fbe47d3c7500cdc3c9668833d2e55681ad66df5b640c61fa9dc25d546efa54d76d7f8bf54b13614ac293631"
+	"packageManager": "pnpm@9.3.0+sha512.ee7b93e0c2bd11409c6424f92b866f31d3ea1bef5fbe47d3c7500cdc3c9668833d2e55681ad66df5b640c61fa9dc25d546efa54d76d7f8bf54b13614ac293631",
+	"pnpm": {
+		"patchedDependencies": {
+			"@vitest/coverage-istanbul@1.6.0": "patches/@vitest__coverage-istanbul@1.6.0.patch",
+			"istanbul-lib-instrument@6.0.2": "patches/istanbul-lib-instrument@6.0.2.patch",
+			"unplugin-parcel-macros@0.0.3": "patches/unplugin-parcel-macros@0.0.3.patch"
+		}
+	}
 }

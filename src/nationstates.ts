@@ -14,11 +14,15 @@ function endpoint(params: Record<string, string>) {
 }
 
 export const nationstates = {
-	async nation(nation: string) {
+	async nation(name: string) {
 		const body = await this.fetch(
-			endpoint({ nation, q: Object.values(shardTags.nation).join('+') }),
+			endpoint({ nation: name, q: Object.values(shardTags.nation).join('+') }),
 		).then((res) => res.text());
-		return parseNation(body);
+		const nation = parseNation(body);
+		if (!nation) {
+			throw new StatusError(404);
+		}
+		return nation;
 	},
 
 	async region(region: string) {

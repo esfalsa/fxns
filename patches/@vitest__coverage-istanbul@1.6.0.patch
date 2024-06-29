@@ -1,0 +1,27 @@
+diff --git a/dist/provider.js b/dist/provider.js
+index 29d6709e17e7f34614c9b2fd58053ecefd07f277..d1fbc3604dcdb519002267b10f296ae466fdd798 100644
+--- a/dist/provider.js
++++ b/dist/provider.js
+@@ -146,7 +146,21 @@ class IstanbulCoverageProvider extends BaseCoverageProvider {
+       // @ts-expect-error missing type
+       coverageGlobalScope: "globalThis",
+       coverageGlobalScopeFunc: false,
+-      ignoreClassMethods: this.options.ignoreClassMethods
++      ignoreClassMethods: this.options.ignoreClassMethods,
++      parserPlugins: [
++        "asyncGenerators",
++        "bigInt",
++        "classProperties",
++        "classPrivateProperties",
++        "classPrivateMethods",
++        "dynamicImport",
++        "importMeta",
++        "numericSeparator",
++        "objectRestSpread",
++        "optionalCatchBinding",
++        "topLevelAwait",
++        ["importAttributes", { deprecatedAssertSyntax: true }],
++      ]
+     });
+     this.testExclude = new _TestExclude({
+       cwd: ctx.config.root,

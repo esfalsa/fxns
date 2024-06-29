@@ -1,63 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { NationParser, ProposalsParser } from '../src/parsers';
+import { parseNation, parseProposal } from '../src/parsers';
 import type { Nation, Proposal } from '../src/shards';
-import { nationXML } from './fixtures/nation';
-import { proposalsXML } from './fixtures/proposals';
+import { nationXML, proposalsXML } from './fixtures';
 
-describe('NationParser', () => {
-	it('parses nation data from a ReadableStream', async () => {
-		const parser = new NationParser();
-		const stream = new ReadableStream<Uint8Array>({
-			start(controller) {
-				controller.enqueue(new TextEncoder().encode(nationXML));
-				controller.close();
-			},
-		});
-
-		expect(await parser.parseStream(stream)).toEqual({
-			name: 'Esfalsa',
-			type: 'Flagless Nation',
-			category: 'Civil Rights Lovefest',
-			population: 18028,
-			demonym2plural: 'Esfalsans',
-			flag: 'https://www.nationstates.net/images/flags/uploads/esfalsa__372439.svg',
-			admirables: [
-				'cultured',
-				'efficient',
-				'environmentally stunning',
-				'genial',
-				'safe',
-				'socially progressive',
-			],
-			notable:
-				'parental licensing program, keen interest in outer space, and stringent health and safety legislation',
-		} satisfies Nation);
-	});
-
-	it('resets parser state while parsing', () => {
-		const parser = new NationParser();
-		const chunks = nationXML.match(/.{1,10}/g)!;
-
-		for (const chunk of chunks.slice(0, chunks.length / 2)) {
-			parser.write(chunk);
-		}
-
-		expect(parser.data).not.toEqual(NationParser.initialData);
-		parser.reset();
-		expect(parser.data).toEqual(NationParser.initialData);
-	});
-
-	it('parses chunked data', () => {
-		const parser = new NationParser();
-		const chunks = nationXML.match(/.{1,10}/g)!;
-
-		for (const chunk of chunks) {
-			parser.write(chunk);
-		}
-
-		parser.end();
-
-		expect(parser.data).toEqual({
+describe('parseNation', () => {
+	it('parses a complete response correctly', () => {
+		expect(parseNation(nationXML)).toEqual({
 			name: 'Esfalsa',
 			type: 'Flagless Nation',
 			category: 'Civil Rights Lovefest',
@@ -78,17 +26,9 @@ describe('NationParser', () => {
 	});
 });
 
-describe('ProposalsParser', () => {
-	it('parses proposal data from a ReadableStream', async () => {
-		const parser = new ProposalsParser('westinor_1718510253');
-		const stream = new ReadableStream<Uint8Array>({
-			start(controller) {
-				controller.enqueue(new TextEncoder().encode(proposalsXML));
-				controller.close();
-			},
-		});
-
-		expect(await parser.parseStream(stream)).toEqual({
+describe('parseProposal', () => {
+	it('parses a complete response correctly', () => {
+		expect(parseProposal(proposalsXML, 'westinor_1718510253')).toEqual({
 			name: 'Commend Nasicournia',
 			category: 'Commendation',
 			created: new Date(1718510253 * 1000),
@@ -103,16 +43,7 @@ describe('ProposalsParser', () => {
 		} satisfies Proposal);
 	});
 
-	it('resets parser state while parsing', () => {
-		const parser = new ProposalsParser('westinor_1718510253');
-		const chunks = proposalsXML.match(/.{1,10}/g)!;
-
-		for (const chunk of chunks.slice(0, (3 * chunks.length) / 3)) {
-			parser.write(chunk);
-		}
-
-		expect(parser.data).not.toEqual(ProposalsParser.initialData);
-		parser.reset();
-		expect(parser.data).toEqual(ProposalsParser.initialData);
+	it('returns undefined for a missing proposal', () => {
+		expect(parseProposal(proposalsXML, 'missing')).toBeUndefined();
 	});
 });

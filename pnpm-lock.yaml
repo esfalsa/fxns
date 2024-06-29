@@ -4,6 +4,17 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@vitest/coverage-istanbul@1.6.0':
+    hash: 4na67lmrjqff2cb5ogyidsh7je
+    path: patches/@vitest__coverage-istanbul@1.6.0.patch
+  istanbul-lib-instrument@6.0.2:
+    hash: lp6psfbfcgbdjg5tqsku2l3nuy
+    path: patches/istanbul-lib-instrument@6.0.2.patch
+  unplugin-parcel-macros@0.0.3:
+    hash: blbjo2spc4whl3xsfchmgonnaq
+    path: patches/unplugin-parcel-macros@0.0.3.patch
+
 importers:
 
   .:
@@ -17,7 +28,7 @@ importers:
     devDependencies:
       '@cloudflare/vitest-pool-workers':
         specifier: ^0.4.6
-        version: 0.4.6(@cloudflare/workers-types@4.20240620.0)(@vitest/runner@1.6.0)(@vitest/snapshot@1.6.0)(vitest@1.5.0(@types/node@20.14.7)(@vitest/ui@1.6.0))
+        version: 0.4.6(@cloudflare/workers-types@4.20240620.0)(@vitest/runner@1.6.0)(@vitest/snapshot@1.6.0)(vitest@1.5.3(@types/node@20.14.7)(@vitest/ui@1.6.0))
       '@cloudflare/workers-types':
         specifier: ^4.20240620.0
         version: 4.20240620.0
@@ -29,10 +40,10 @@ importers:
         version: 15.2.3(rollup@4.18.0)
       '@vitest/coverage-istanbul':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.5.0(@types/node@20.14.7)(@vitest/ui@1.6.0))
+        version: 1.6.0(patch_hash=4na67lmrjqff2cb5ogyidsh7je)(vitest@1.5.3(@types/node@20.14.7)(@vitest/ui@1.6.0))
       '@vitest/ui':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.5.0)
+        version: 1.6.0(vitest@1.5.3)
       crawler-user-agents:
         specifier: ^1.0.142
         version: 1.0.142
@@ -59,10 +70,10 @@ importers:
         version: 8.0.0-alpha.30(eslint@9.5.0)(typescript@5.5.2)
       unplugin-parcel-macros:
         specifier: ^0.0.3
-        version: 0.0.3
+        version: 0.0.3(patch_hash=blbjo2spc4whl3xsfchmgonnaq)
       vitest:
         specifier: ~1.5.0
-        version: 1.5.0(@types/node@20.14.7)(@vitest/ui@1.6.0)
+        version: 1.5.3(@types/node@20.14.7)(@vitest/ui@1.6.0)
       wrangler:
         specifier: ^3.61.0
         version: 3.61.0(@cloudflare/workers-types@4.20240620.0)
@@ -1045,31 +1056,31 @@ packages:
     peerDependencies:
       vitest: 1.6.0
 
-  '@vitest/expect@1.5.0':
-    resolution: {integrity: sha512-0pzuCI6KYi2SIC3LQezmxujU9RK/vwC1U9R0rLuGlNGcOuDWxqWKu6nUdFsX9tH1WU0SXtAxToOsEjeUn1s3hA==}
+  '@vitest/expect@1.5.3':
+    resolution: {integrity: sha512-y+waPz31pOFr3rD7vWTbwiLe5+MgsMm40jTZbQE8p8/qXyBX3CQsIXRx9XK12IbY7q/t5a5aM/ckt33b4PxK2g==}
 
-  '@vitest/runner@1.5.0':
-    resolution: {integrity: sha512-7HWwdxXP5yDoe7DTpbif9l6ZmDwCzcSIK38kTSIt6CFEpMjX4EpCgT6wUmS0xTXqMI6E/ONmfgRKmaujpabjZQ==}
+  '@vitest/runner@1.5.3':
+    resolution: {integrity: sha512-7PlfuReN8692IKQIdCxwir1AOaP5THfNkp0Uc4BKr2na+9lALNit7ub9l3/R7MP8aV61+mHKRGiqEKRIwu6iiQ==}
 
   '@vitest/runner@1.6.0':
     resolution: {integrity: sha512-P4xgwPjwesuBiHisAVz/LSSZtDjOTPYZVmNAnpHHSR6ONrf8eCJOFRvUwdHn30F5M1fxhqtl7QZQUk2dprIXAg==}
 
-  '@vitest/snapshot@1.5.0':
-    resolution: {integrity: sha512-qpv3fSEuNrhAO3FpH6YYRdaECnnRjg9VxbhdtPwPRnzSfHVXnNzzrpX4cJxqiwgRMo7uRMWDFBlsBq4Cr+rO3A==}
+  '@vitest/snapshot@1.5.3':
+    resolution: {integrity: sha512-K3mvIsjyKYBhNIDujMD2gfQEzddLe51nNOAf45yKRt/QFJcUIeTQd2trRvv6M6oCBHNVnZwFWbQ4yj96ibiDsA==}
 
   '@vitest/snapshot@1.6.0':
     resolution: {integrity: sha512-+Hx43f8Chus+DCmygqqfetcAZrDJwvTj0ymqjQq4CvmpKFSTVteEOBzCusu1x2tt4OJcvBflyHUE0DZSLgEMtQ==}
 
-  '@vitest/spy@1.5.0':
-    resolution: {integrity: sha512-vu6vi6ew5N5MMHJjD5PoakMRKYdmIrNJmyfkhRpQt5d9Ewhw9nZ5Aqynbi3N61bvk9UvZ5UysMT6ayIrZ8GA9w==}
+  '@vitest/spy@1.5.3':
+    resolution: {integrity: sha512-Llj7Jgs6lbnL55WoshJUUacdJfjU2honvGcAJBxhra5TPEzTJH8ZuhI3p/JwqqfnTr4PmP7nDmOXP53MS7GJlg==}
 
   '@vitest/ui@1.6.0':
     resolution: {integrity: sha512-k3Lyo+ONLOgylctiGovRKy7V4+dIN2yxstX3eY5cWFXH6WP+ooVX79YSyi0GagdTQzLmT43BF27T0s6dOIPBXA==}
     peerDependencies:
       vitest: 1.6.0
 
-  '@vitest/utils@1.5.0':
-    resolution: {integrity: sha512-BDU0GNL8MWkRkSRdNFvCUCAVOeHaUlVJ9Tx0TYBZyXaaOTmGtUFObzchCivIBrIwKzvZA7A9sCejVhXM2aY98A==}
+  '@vitest/utils@1.5.3':
+    resolution: {integrity: sha512-rE9DTN1BRhzkzqNQO+kw8ZgfeEBCLXiHJwetk668shmNBpSagQxneT5eSqEBLP+cqSiAeecvQmbpFfdMyLcIQA==}
 
   '@vitest/utils@1.6.0':
     resolution: {integrity: sha512-21cPiuGMoMZwiOHa2i4LXkMkMkCGzA+MVFV70jRwHo95dL4x/ts5GZhML1QWuy7yfp3WzK3lRvZi3JnXTYqrBw==}
@@ -2144,8 +2155,8 @@ packages:
     resolution: {integrity: sha512-6Z7Ma2aVEWisaL6TvBCy7P8rm2LQoPv6dJ7ecIaIixHcwfbJ0x7mWdbcwlIM5IGQxPZSFYeqRCqlOOeKoJYMkw==}
     engines: {node: '>= 4'}
 
-  vite-node@1.5.0:
-    resolution: {integrity: sha512-tV8h6gMj6vPzVCa7l+VGq9lwoJjW8Y79vst8QZZGiuRAfijU+EEWuc0kFpmndQrWhMMhet1jdSF+40KSZUqIIw==}
+  vite-node@1.5.3:
+    resolution: {integrity: sha512-axFo00qiCpU/JLd8N1gu9iEYL3xTbMbMrbe5nDp9GL0nb6gurIdZLkkFogZXWnE8Oyy5kfSLwNVIcVsnhE7lgQ==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
 
@@ -2177,15 +2188,15 @@ packages:
       terser:
         optional: true
 
-  vitest@1.5.0:
-    resolution: {integrity: sha512-d8UKgR0m2kjdxDWX6911uwxout6GHS0XaGH1cksSIVVG8kRlE7G7aBw7myKQCvDI5dT4j7ZMa+l706BIORMDLw==}
+  vitest@1.5.3:
+    resolution: {integrity: sha512-2oM7nLXylw3mQlW6GXnRriw+7YvZFk/YNV8AxIC3Z3MfFbuziLGWP9GPxxu/7nRlXhqyxBikpamr+lEEj1sUEw==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
       '@edge-runtime/vm': '*'
       '@types/node': ^18.0.0 || >=20.0.0
-      '@vitest/browser': 1.5.0
-      '@vitest/ui': 1.5.0
+      '@vitest/browser': 1.5.3
+      '@vitest/ui': 1.5.3
       happy-dom: '*'
       jsdom: '*'
     peerDependenciesMeta:
@@ -2420,7 +2431,7 @@ snapshots:
     dependencies:
       mime: 3.0.0
 
-  '@cloudflare/vitest-pool-workers@0.4.6(@cloudflare/workers-types@4.20240620.0)(@vitest/runner@1.6.0)(@vitest/snapshot@1.6.0)(vitest@1.5.0(@types/node@20.14.7)(@vitest/ui@1.6.0))':
+  '@cloudflare/vitest-pool-workers@0.4.6(@cloudflare/workers-types@4.20240620.0)(@vitest/runner@1.6.0)(@vitest/snapshot@1.6.0)(vitest@1.5.3(@types/node@20.14.7)(@vitest/ui@1.6.0))':
     dependencies:
       '@vitest/runner': 1.6.0
       '@vitest/snapshot': 1.6.0
@@ -2430,7 +2441,7 @@ snapshots:
       esbuild: 0.17.19
       miniflare: 3.20240610.1
       semver: 7.6.2
-      vitest: 1.5.0(@types/node@20.14.7)(@vitest/ui@1.6.0)
+      vitest: 1.5.3(@types/node@20.14.7)(@vitest/ui@1.6.0)
       wrangler: 3.61.0(@cloudflare/workers-types@4.20240620.0)
       zod: 3.23.8
     transitivePeerDependencies:
@@ -3156,30 +3167,30 @@ snapshots:
       '@typescript-eslint/types': 8.0.0-alpha.30
       eslint-visitor-keys: 3.4.3
 
-  '@vitest/coverage-istanbul@1.6.0(vitest@1.5.0(@types/node@20.14.7)(@vitest/ui@1.6.0))':
+  '@vitest/coverage-istanbul@1.6.0(patch_hash=4na67lmrjqff2cb5ogyidsh7je)(vitest@1.5.3(@types/node@20.14.7)(@vitest/ui@1.6.0))':
     dependencies:
       debug: 4.3.5
       istanbul-lib-coverage: 3.2.2
-      istanbul-lib-instrument: 6.0.2
+      istanbul-lib-instrument: 6.0.2(patch_hash=lp6psfbfcgbdjg5tqsku2l3nuy)
       istanbul-lib-report: 3.0.1
       istanbul-lib-source-maps: 5.0.4
       istanbul-reports: 3.1.7
       magicast: 0.3.4
       picocolors: 1.0.1
       test-exclude: 6.0.0
-      vitest: 1.5.0(@types/node@20.14.7)(@vitest/ui@1.6.0)
+      vitest: 1.5.3(@types/node@20.14.7)(@vitest/ui@1.6.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/expect@1.5.0':
+  '@vitest/expect@1.5.3':
     dependencies:
-      '@vitest/spy': 1.5.0
-      '@vitest/utils': 1.5.0
+      '@vitest/spy': 1.5.3
+      '@vitest/utils': 1.5.3
       chai: 4.4.1
 
-  '@vitest/runner@1.5.0':
+  '@vitest/runner@1.5.3':
     dependencies:
-      '@vitest/utils': 1.5.0
+      '@vitest/utils': 1.5.3
       p-limit: 5.0.0
       pathe: 1.1.2
 
@@ -3189,7 +3200,7 @@ snapshots:
       p-limit: 5.0.0
       pathe: 1.1.2
 
-  '@vitest/snapshot@1.5.0':
+  '@vitest/snapshot@1.5.3':
     dependencies:
       magic-string: 0.30.10
       pathe: 1.1.2
@@ -3201,11 +3212,11 @@ snapshots:
       pathe: 1.1.2
       pretty-format: 29.7.0
 
-  '@vitest/spy@1.5.0':
+  '@vitest/spy@1.5.3':
     dependencies:
       tinyspy: 2.2.1
 
-  '@vitest/ui@1.6.0(vitest@1.5.0)':
+  '@vitest/ui@1.6.0(vitest@1.5.3)':
     dependencies:
       '@vitest/utils': 1.6.0
       fast-glob: 3.3.2
@@ -3214,9 +3225,9 @@ snapshots:
       pathe: 1.1.2
       picocolors: 1.0.1
       sirv: 2.0.4
-      vitest: 1.5.0(@types/node@20.14.7)(@vitest/ui@1.6.0)
+      vitest: 1.5.3(@types/node@20.14.7)(@vitest/ui@1.6.0)
 
-  '@vitest/utils@1.5.0':
+  '@vitest/utils@1.5.3':
     dependencies:
       diff-sequences: 29.6.3
       estree-walker: 3.0.3
@@ -3762,7 +3773,7 @@ snapshots:
 
   istanbul-lib-coverage@3.2.2: {}
 
-  istanbul-lib-instrument@6.0.2:
+  istanbul-lib-instrument@6.0.2(patch_hash=lp6psfbfcgbdjg5tqsku2l3nuy):
     dependencies:
       '@babel/core': 7.24.7
       '@babel/parser': 7.24.7
@@ -4281,7 +4292,7 @@ snapshots:
   unplugin-parcel-macros-win32-x64-msvc@0.0.3:
     optional: true
 
-  unplugin-parcel-macros@0.0.3:
+  unplugin-parcel-macros@0.0.3(patch_hash=blbjo2spc4whl3xsfchmgonnaq):
     dependencies:
       '@parcel/core': 2.12.0
       '@parcel/fs': 2.12.0(@parcel/core@2.12.0)
@@ -4318,7 +4329,7 @@ snapshots:
 
   utility-types@3.11.0: {}
 
-  vite-node@1.5.0(@types/node@20.14.7):
+  vite-node@1.5.3(@types/node@20.14.7):
     dependencies:
       cac: 6.7.14
       debug: 4.3.5
@@ -4344,13 +4355,13 @@ snapshots:
       '@types/node': 20.14.7
       fsevents: 2.3.3
 
-  vitest@1.5.0(@types/node@20.14.7)(@vitest/ui@1.6.0):
+  vitest@1.5.3(@types/node@20.14.7)(@vitest/ui@1.6.0):
     dependencies:
-      '@vitest/expect': 1.5.0
-      '@vitest/runner': 1.5.0
-      '@vitest/snapshot': 1.5.0
-      '@vitest/spy': 1.5.0
-      '@vitest/utils': 1.5.0
+      '@vitest/expect': 1.5.3
+      '@vitest/runner': 1.5.3
+      '@vitest/snapshot': 1.5.3
+      '@vitest/spy': 1.5.3
+      '@vitest/utils': 1.5.3
       acorn-walk: 8.3.3
       chai: 4.4.1
       debug: 4.3.5
@@ -4364,11 +4375,11 @@ snapshots:
       tinybench: 2.8.0
       tinypool: 0.8.4
       vite: 5.3.1(@types/node@20.14.7)
-      vite-node: 1.5.0(@types/node@20.14.7)
+      vite-node: 1.5.3(@types/node@20.14.7)
       why-is-node-running: 2.2.2
     optionalDependencies:
       '@types/node': 20.14.7
-      '@vitest/ui': 1.6.0(vitest@1.5.0)
+      '@vitest/ui': 1.6.0(vitest@1.5.3)
     transitivePeerDependencies:
       - less
       - lightningcss

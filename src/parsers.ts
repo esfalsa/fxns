@@ -8,7 +8,7 @@ export function parseNation(xml: string) {
 	const nation: PartialPick<Nation, 'admirables'> = { admirables: [] };
 
 	for (const match of xml.matchAll(tagRegExp)) {
-		if (!match.groups || !match.groups.content) break;
+		if (!match.groups || !match.groups.content) return;
 
 		switch (match.groups.tag as ShardTag<'nation'>) {
 			case 'NAME':
@@ -96,7 +96,7 @@ export function parseProposal(xml: string, id: string) {
 				proposal.proposedBy = match.groups.content;
 				break;
 			case 'APPROVALS':
-				proposal.approvals.push(match.groups.content);
+				proposal.approvals = match.groups.content.split(':');
 				break;
 			case 'LEGAL':
 				proposal.legal.push(match.groups.content);
