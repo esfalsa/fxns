@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { $createTagsRegExp } from '../src/macros';
 
-describe('tag macros', () => {
-	it('is equivalent to a manually generated macro', () => {
+describe('nation tag regular expression', () => {
+	it('is equivalent to a manually generated regular expression', () => {
 		const created = $createTagsRegExp('nation');
 		const expected =
-			/<(?<tag>NAME|TYPE|CATEGORY|FLAG|POPULATION|DEMONYM2PLURAL|NOTABLE|ADMIRABLE)>(?<content>.+?)<\/(?:NAME|TYPE|CATEGORY|FLAG|POPULATION|DEMONYM2PLURAL|NOTABLE|ADMIRABLE)>/g;
+			/<(?<tag>NAME|TYPE|CATEGORY|FLAG|POPULATION|DEMONYM2PLURAL|NOTABLE|ADMIRABLE)>(?<content>.+?)<\/(?:\k<tag>)>/g;
 		expect(created.source).toBe(expected.source);
 		expect(created.global).toBe(expected.global);
 		expect(created.ignoreCase).toBe(expected.ignoreCase);
@@ -20,12 +20,15 @@ describe('tag macros', () => {
 		expect(regex.test(noMatch)).toBe(false);
 	});
 
-	it('stops matching at the first closing tag', () => {
-		const text = '<NAME>Maxtopia</NAME><TYPE>Father Knows Best State</TYPE>';
+	it('stops matching at the first matching closing tag', () => {
+		const text = '<NAME>Maxtopia <TYPE>Father Knows Best State</TYPE></NAME>';
 		const regex = $createTagsRegExp('nation');
 		const matches = text.match(regex);
 
-		expect(matches?.length).toBe(2);
+		expect(matches?.length).toBe(1);
+		expect(matches?.[0]).toBe(
+			'<NAME>Maxtopia <TYPE>Father Knows Best State</TYPE></NAME>',
+		);
 	});
 
 	it('matches multiple tags and content', () => {

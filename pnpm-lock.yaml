@@ -2750,6 +2750,8 @@ snapshots:
       '@parcel/logger': 2.12.0
       '@parcel/utils': 2.12.0
       lmdb: 2.8.5
+    transitivePeerDependencies:
+      - '@swc/helpers'
 
   '@parcel/codeframe@2.12.0':
     dependencies:
