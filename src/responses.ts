@@ -18,14 +18,14 @@ export const htmlResponse = async (
 	});
 };
 
-async function formatResponse(
+function formatResponse(
 	canonicalURL: string,
 	title: string,
 	description: string,
 	image: string,
 	imageAlt: string,
 ) {
-	return await html`<!doctype html>
+	return html`<!doctype html>
 		<html lang="en">
 			<head>
 				<meta charset="UTF-8" />
@@ -83,11 +83,6 @@ export const nationResponse = async (nation: Awaitable<Nation>) => {
 			data.flag,
 			`Flag of ${data.name}`,
 		),
-		{
-			headers: {
-				'Cache-Control': 'max-age=86400, must-revalidate',
-			},
-		},
 	);
 };
 
@@ -105,9 +100,6 @@ export const proposalResponse = async (
 			'https://www.nationstates.net/images/waflag.svg',
 			'World Assembly logo',
 		),
-		{
-			headers: { 'Cache-Control': 'max-age=86400, must-revalidate' },
-		},
 	);
 };
 

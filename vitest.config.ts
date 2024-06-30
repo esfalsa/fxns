@@ -1,4 +1,5 @@
 import { defineWorkersConfig } from '@cloudflare/vitest-pool-workers/config';
+import macros from 'unplugin-parcel-macros';
 
 export default defineWorkersConfig({
 	test: {
@@ -12,4 +13,5 @@ export default defineWorkersConfig({
 			include: ['src/**/*.ts'],
 		},
 	},
+	plugins: [macros.vite()],
 });

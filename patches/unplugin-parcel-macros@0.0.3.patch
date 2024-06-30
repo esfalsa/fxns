@@ -1,0 +1,15 @@
+diff --git a/unplugin-macros.js b/unplugin-macros.js
+index ef202f203a02cb6756d35f6161e856a953d1b727..a9ec4638ca26114187490df1572b428e4a2e9aa9 100644
+--- a/unplugin-macros.js
++++ b/unplugin-macros.js
+@@ -129,6 +129,10 @@ module.exports = createUnplugin(() => {
+         }
+       });
+ 
++      const map = JSON.parse(res.map);
++      map.sources = [filePath];
++      res.map = JSON.stringify(map);
++
+       res.code += '\n' + imports.join('\n');
+       return res;
+     },

@@ -892,3 +892,6 @@ While recognizing the importance of independent journalism in wartime, and there
 </PROPOSALS>
 </WA>
 `;
+
+export const proposalID = 'westinor_1718510253';
+export const proposalWithEntities = 'the_ice_states_1716956683';

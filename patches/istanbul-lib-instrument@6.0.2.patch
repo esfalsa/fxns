@@ -1,0 +1,15 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+deleted file mode 100644
+index 709890eceff392a3b658c039a844bfb1cf3e61c4..0000000000000000000000000000000000000000
+diff --git a/src/instrumenter.js b/src/instrumenter.js
+index 3322e6eb295d632a609ca950cefbcd6c6ae4776f..56c649c1761e232706949e9e1f8b22f66386f8bb 100644
+--- a/src/instrumenter.js
++++ b/src/instrumenter.js
+@@ -71,6 +71,7 @@ class Instrumenter {
+                 sourceType: opts.esModules ? 'module' : 'script',
+                 plugins: opts.parserPlugins
+             },
++            generatorOpts: { importAttributesKeyword: 'with' },
+             plugins: [
+                 [
+                     ({ types }) => {

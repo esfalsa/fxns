@@ -7,9 +7,6 @@ import {
 } from './responses';
 import { canonicalize, nationstates } from './nationstates';
 import { isBot } from './user-agents';
-import { ProposalsParser } from './parsers';
-
-import { proposalsXML } from '../test/fixtures/proposals';
 
 const router = IttyRouter();
 
@@ -38,17 +35,11 @@ router
 			302,
 		);
 	})
-	.get('/static-test-page', () => {
-		const parser = new ProposalsParser('westinor_1718510253');
-		const data = parser.parseString(proposalsXML);
-		return proposalResponse(data, 'westinor_1718510253');
-	})
 	.get('/:nation', async ({ params, headers }) => {
 		const userAgent = headers.get('User-Agent');
 		if (!userAgent || isBot(userAgent)) {
 			return nationResponse(nationstates.nation(params.nation!));
 		}
-
 		return Response.redirect(
 			`https://www.nationstates.net/nation=${canonicalize(params.nation!)}`,
 			302,

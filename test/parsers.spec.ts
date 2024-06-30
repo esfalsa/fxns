@@ -1,63 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { NationParser, ProposalsParser } from '../src/parsers';
+import { parseNation, parseProposal } from '../src/parsers';
 import type { Nation, Proposal } from '../src/shards';
-import { nationXML } from './fixtures/nation';
-import { proposalsXML } from './fixtures/proposals';
+import { nationXML, proposalsXML } from './fixtures';
+import { proposalID, proposalWithEntities } from './fixtures/proposals';
 
-describe('NationParser', () => {
-	it('parses nation data from a ReadableStream', async () => {
-		const parser = new NationParser();
-		const stream = new ReadableStream<Uint8Array>({
-			start(controller) {
-				controller.enqueue(new TextEncoder().encode(nationXML));
-				controller.close();
-			},
-		});
-
-		expect(await parser.parseStream(stream)).toEqual({
-			name: 'Esfalsa',
-			type: 'Flagless Nation',
-			category: 'Civil Rights Lovefest',
-			population: 18028,
-			demonym2plural: 'Esfalsans',
-			flag: 'https://www.nationstates.net/images/flags/uploads/esfalsa__372439.svg',
-			admirables: [
-				'cultured',
-				'efficient',
-				'environmentally stunning',
-				'genial',
-				'safe',
-				'socially progressive',
-			],
-			notable:
-				'parental licensing program, keen interest in outer space, and stringent health and safety legislation',
-		} satisfies Nation);
-	});
-
-	it('resets parser state while parsing', () => {
-		const parser = new NationParser();
-		const chunks = nationXML.match(/.{1,10}/g)!;
-
-		for (const chunk of chunks.slice(0, chunks.length / 2)) {
-			parser.write(chunk);
-		}
-
-		expect(parser.data).not.toEqual(NationParser.initialData);
-		parser.reset();
-		expect(parser.data).toEqual(NationParser.initialData);
-	});
-
-	it('parses chunked data', () => {
-		const parser = new NationParser();
-		const chunks = nationXML.match(/.{1,10}/g)!;
-
-		for (const chunk of chunks) {
-			parser.write(chunk);
-		}
-
-		parser.end();
-
-		expect(parser.data).toEqual({
+describe('parseNation', () => {
+	it('parses a complete response correctly', () => {
+		expect(parseNation(nationXML)).toEqual({
 			name: 'Esfalsa',
 			type: 'Flagless Nation',
 			category: 'Civil Rights Lovefest',
@@ -78,17 +27,9 @@ describe('NationParser', () => {
 	});
 });
 
-describe('ProposalsParser', () => {
-	it('parses proposal data from a ReadableStream', async () => {
-		const parser = new ProposalsParser('westinor_1718510253');
-		const stream = new ReadableStream<Uint8Array>({
-			start(controller) {
-				controller.enqueue(new TextEncoder().encode(proposalsXML));
-				controller.close();
-			},
-		});
-
-		expect(await parser.parseStream(stream)).toEqual({
+describe('parseProposal', () => {
+	it('parses a complete response correctly', () => {
+		expect(parseProposal(proposalsXML, proposalID)).toEqual({
 			name: 'Commend Nasicournia',
 			category: 'Commendation',
 			created: new Date(1718510253 * 1000),
@@ -103,16 +44,23 @@ describe('ProposalsParser', () => {
 		} satisfies Proposal);
 	});
 
-	it('resets parser state while parsing', () => {
-		const parser = new ProposalsParser('westinor_1718510253');
-		const chunks = proposalsXML.match(/.{1,10}/g)!;
+	it('returns undefined for a missing proposal', () => {
+		expect(parseProposal(proposalsXML, 'missing')).toBeUndefined();
+	});
 
-		for (const chunk of chunks.slice(0, (3 * chunks.length) / 3)) {
-			parser.write(chunk);
-		}
-
-		expect(parser.data).not.toEqual(ProposalsParser.initialData);
-		parser.reset();
-		expect(parser.data).toEqual(ProposalsParser.initialData);
+	it('parses a proposal with encoded entities', () => {
+		expect(parseProposal(proposalsXML, proposalWithEntities)).toEqual({
+			name: 'Repeal "Sensible Limits on Hunting"',
+			category: 'Repeal',
+			created: new Date(1716956683 * 1000),
+			discard: [],
+			illegal: [],
+			legal: ['desmosthenes_and_burke', 'barfleur', 'imperium_anglorum'],
+			proposedBy: 'the_ice_states',
+			approvals:
+				'waffenbrightonburg:vosko:franconia_empire:zombiedolphins:san_lumen:shawrmastan:tueytonia:south_china_sea_islands:fachumonn:anti-void:bali_kingdom:united_lammunist_republic:sneyland:the_kharkivan_cossacks:shattered_cascadia:fictia:hey_man_nation:thesapphire:north_nixia:the_duss:kalustyan:denathor:cedar_tree:mail_jeevas:lergotum:quetesia:lamoni:darkarion:newer_ostland:ancientania:lurusitania:impera_lunara:kazakhstan_rss:the_umns:andrw_tate:betashock:faygoer:star_forge:enslavetopia:the_auglands:chesapeake_founder:ubernech:secret_agent_99:ebonhand:wolfs_brigade:typica:sanctaria:s0uth_afr1ca:kolatis:henrylands:lennonia:kzdor:kantabria:sussywussyland:mark:zvlokiquix:eco-paris_reformation:the_unsgr_senate:island_of_avalon:koac:united_bongo_states_of_the_new_america:new_samba:jakapil_island:the_bladeist_association_of_brazil:newtexas:qudrath:roylaii:the_surviving_canadian_resistance:east_embia_albils:hemogard:new_vonderland:balkaniciana:sarvanti:alkhen-morrensk:perlito:kethania:southern_caek_saimatertoutari:kewl_kids'.split(
+					':',
+				),
+		} satisfies Proposal);
 	});
 });
