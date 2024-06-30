@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { parseNation, parseProposal } from '../src/parsers';
 import type { Nation, Proposal } from '../src/shards';
 import { nationXML, proposalsXML } from './fixtures';
+import { proposalID, proposalWithEntities } from './fixtures/proposals';
 
 describe('parseNation', () => {
 	it('parses a complete response correctly', () => {
@@ -28,7 +29,7 @@ describe('parseNation', () => {
 
 describe('parseProposal', () => {
 	it('parses a complete response correctly', () => {
-		expect(parseProposal(proposalsXML, 'westinor_1718510253')).toEqual({
+		expect(parseProposal(proposalsXML, proposalID)).toEqual({
 			name: 'Commend Nasicournia',
 			category: 'Commendation',
 			created: new Date(1718510253 * 1000),
@@ -45,5 +46,21 @@ describe('parseProposal', () => {
 
 	it('returns undefined for a missing proposal', () => {
 		expect(parseProposal(proposalsXML, 'missing')).toBeUndefined();
+	});
+
+	it('parses a proposal with encoded entities', () => {
+		expect(parseProposal(proposalsXML, proposalWithEntities)).toEqual({
+			name: 'Repeal "Sensible Limits on Hunting"',
+			category: 'Repeal',
+			created: new Date(1716956683 * 1000),
+			discard: [],
+			illegal: [],
+			legal: ['desmosthenes_and_burke', 'barfleur', 'imperium_anglorum'],
+			proposedBy: 'the_ice_states',
+			approvals:
+				'waffenbrightonburg:vosko:franconia_empire:zombiedolphins:san_lumen:shawrmastan:tueytonia:south_china_sea_islands:fachumonn:anti-void:bali_kingdom:united_lammunist_republic:sneyland:the_kharkivan_cossacks:shattered_cascadia:fictia:hey_man_nation:thesapphire:north_nixia:the_duss:kalustyan:denathor:cedar_tree:mail_jeevas:lergotum:quetesia:lamoni:darkarion:newer_ostland:ancientania:lurusitania:impera_lunara:kazakhstan_rss:the_umns:andrw_tate:betashock:faygoer:star_forge:enslavetopia:the_auglands:chesapeake_founder:ubernech:secret_agent_99:ebonhand:wolfs_brigade:typica:sanctaria:s0uth_afr1ca:kolatis:henrylands:lennonia:kzdor:kantabria:sussywussyland:mark:zvlokiquix:eco-paris_reformation:the_unsgr_senate:island_of_avalon:koac:united_bongo_states_of_the_new_america:new_samba:jakapil_island:the_bladeist_association_of_brazil:newtexas:qudrath:roylaii:the_surviving_canadian_resistance:east_embia_albils:hemogard:new_vonderland:balkaniciana:sarvanti:alkhen-morrensk:perlito:kethania:southern_caek_saimatertoutari:kewl_kids'.split(
+					':',
+				),
+		} satisfies Proposal);
 	});
 });

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { html, raw } from '../src/escaping';
+import { decodeEntities, encodeEntities, html } from '../src/escaping';
 
 describe('html string escaping', () => {
 	it('does not escape directly passed html', () => {
@@ -13,7 +13,7 @@ describe('html string escaping', () => {
 		expect(
 			// prettier-ignore
 			html`<script>alert(${`'hi'`});</script>`,
-		).toEqual(`<script>alert(&#39;hi&#39;);</script>`);
+		).toEqual(`<script>alert(&apos;hi&apos;);</script>`);
 	});
 
 	it('escapes multiple templated html strings', () => {
@@ -21,7 +21,7 @@ describe('html string escaping', () => {
 			// prettier-ignore
 			html`<script>alert(${`'hi'`});</script><script>alert(${`'bye'`});</script>`,
 		).toEqual(
-			`<script>alert(&#39;hi&#39;);</script><script>alert(&#39;bye&#39;);</script>`,
+			`<script>alert(&apos;hi&apos;);</script><script>alert(&apos;bye&apos;);</script>`,
 		);
 	});
 
@@ -29,16 +29,24 @@ describe('html string escaping', () => {
 		expect(
 			// prettier-ignore
 			html`<html>${`<script>alert('hi');</script>`}</html>`,
-		).toEqual(`<html>&lt;script&gt;alert(&#39;hi&#39;);&lt;/script&gt;</html>`);
+		).toEqual(
+			`<html>&lt;script&gt;alert(&apos;hi&apos;);&lt;/script&gt;</html>`,
+		);
 	});
+});
 
-	it('');
+describe('xml entity decoding', () => {
+	it('decodes entities', () => {
+		expect(decodeEntities(/* html */ `&quot; &lt; &gt; &apos; &amp;`)).toEqual(
+			`" < > ' &`,
+		);
+	});
+});
 
-	it('ignores raw text', () => {
-		const name = 'Max &quot;[violet]&quot; Barry';
-		expect(
-			// prettier-ignore
-			html`<p>Who is ${raw(name)}?</p>`,
-		).toEqual('<p>Who is Max &quot;[violet]&quot; Barry?</p>');
+describe('xml entity encoding', () => {
+	it('encodes entities', () => {
+		expect(encodeEntities(`" < > ' &`)).toEqual(
+			'&quot; &lt; &gt; &apos; &amp;',
+		);
 	});
 });

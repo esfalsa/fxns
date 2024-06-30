@@ -6,11 +6,11 @@ const base = 'https://www.nationstates.net/cgi-bin/api.cgi';
 const userAgent = 'fxns/0.1.0 (by:Esfalsa)';
 
 function endpoint(params: Record<string, string>) {
-	const res = [];
-	for (const key in params) {
-		res.push(key + '=' + params[key]);
+	const url = new URL(base);
+	for (const [key, value] of Object.entries(params)) {
+		url.searchParams.append(key, value);
 	}
-	return base + '?' + res.join('&');
+	return url.toString();
 }
 
 export const nationstates = {

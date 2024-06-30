@@ -2,7 +2,7 @@ import type { StatusError } from 'itty-router';
 import { error } from 'itty-router';
 import { canonicalize } from './nationstates';
 import type { Nation, Proposal } from './shards';
-import { html, raw } from './escaping';
+import { html } from './escaping';
 import type { Awaitable } from './types';
 
 export const htmlResponse = async (
@@ -95,7 +95,7 @@ export const proposalResponse = async (
 	return htmlResponse(
 		formatResponse(
 			`https://www.nationstates.net/page=UN_view_proposal/id=${id}`,
-			raw(`Proposal | ${data.name}`),
+			`Proposal | ${data.name}`,
 			`A ${data.category} proposal by ${data.proposedBy} created on ${data.created.toLocaleDateString('en-US')} with ${data.approvals.length} approvals.\n\nLegal: ${data.legal.length} | Illegal: ${data.illegal.length} | Discard: ${data.discard.length}`,
 			'https://www.nationstates.net/images/waflag.svg',
 			'World Assembly logo',

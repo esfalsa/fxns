@@ -1,6 +1,7 @@
 import type { ShardTag, Nation, Proposal, Region } from './shards';
 import { $createTagsRegExp } from './macros' with { type: 'macro' };
 import type { PartialPick } from './types';
+import { decodeEntities } from './escaping';
 
 export function parseNation(xml: string) {
 	const tagRegExp = $createTagsRegExp('nation');
@@ -10,30 +11,32 @@ export function parseNation(xml: string) {
 	for (const match of xml.matchAll(tagRegExp)) {
 		if (!match.groups || !match.groups.content) return;
 
+		const content = decodeEntities(match.groups.content);
+
 		switch (match.groups.tag as ShardTag<'nation'>) {
 			case 'NAME':
-				nation.name = match.groups.content;
+				nation.name = content;
 				break;
 			case 'TYPE':
-				nation.type = match.groups.content;
+				nation.type = content;
 				break;
 			case 'CATEGORY':
-				nation.category = match.groups.content;
+				nation.category = content;
 				break;
 			case 'DEMONYM2PLURAL':
-				nation.demonym2plural = match.groups.content;
+				nation.demonym2plural = content;
 				break;
 			case 'POPULATION':
-				nation.population = Number(match.groups.content);
+				nation.population = Number(content);
 				break;
 			case 'FLAG':
-				nation.flag = match.groups.content;
+				nation.flag = content;
 				break;
 			case 'ADMIRABLE':
-				nation.admirables.push(match.groups.content);
+				nation.admirables.push(content);
 				break;
 			case 'NOTABLE':
-				nation.notable = match.groups.content;
+				nation.notable = content;
 				break;
 		}
 	}
@@ -47,14 +50,16 @@ export function parseRegion(xml: string) {
 	const region: Partial<Region> = {};
 
 	for (const match of xml.matchAll(tagRegExp)) {
-		if (!match.groups || !match.groups.content) break;
+		if (!match.groups || !match.groups.content) return;
+
+		const content = decodeEntities(match.groups.content);
 
 		switch (match.groups.tag as ShardTag<'region'>) {
 			case 'NAME':
-				region.name = match.groups.content;
+				region.name = content;
 				break;
 			case 'NUMNATIONS':
-				region.numnations = Number(match.groups.content);
+				region.numnations = Number(content);
 				break;
 		}
 	}
@@ -82,30 +87,32 @@ export function parseProposal(xml: string, id: string) {
 	for (const match of proposalXML.matchAll(tagRegExp)) {
 		if (!match.groups || !match.groups.content) return;
 
+		const content = decodeEntities(match.groups.content);
+
 		switch (match.groups.tag as ShardTag<'proposals'>) {
 			case 'NAME':
-				proposal.name = match.groups.content;
+				proposal.name = content;
 				break;
 			case 'CATEGORY':
-				proposal.category = match.groups.content;
+				proposal.category = content;
 				break;
 			case 'CREATED':
-				proposal.created = new Date(Number(match.groups.content) * 1000);
+				proposal.created = new Date(Number(content) * 1000);
 				break;
 			case 'PROPOSED_BY':
-				proposal.proposedBy = match.groups.content;
+				proposal.proposedBy = content;
 				break;
 			case 'APPROVALS':
-				proposal.approvals = match.groups.content.split(':');
+				proposal.approvals = content.split(':');
 				break;
 			case 'LEGAL':
-				proposal.legal.push(match.groups.content);
+				proposal.legal.push(content);
 				break;
 			case 'ILLEGAL':
-				proposal.illegal.push(match.groups.content);
+				proposal.illegal.push(content);
 				break;
 			case 'DISCARD':
-				proposal.discard.push(match.groups.content);
+				proposal.discard.push(content);
 				break;
 		}
 	}

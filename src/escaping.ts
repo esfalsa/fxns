@@ -3,20 +3,31 @@ import type { Awaitable } from './types';
 type HTMLEscaped = { escaped: true };
 type EscapedString = string & HTMLEscaped;
 
-const replacements: Record<string, string> = {
-	'&': '&amp;',
-	'<': '&lt;',
-	'>': '&gt;',
-	"'": '&#39;',
-	'"': '&quot;',
-};
+const replacements = new Map([
+	['&', '&amp;'],
+	['<', '&lt;'],
+	['>', '&gt;'],
+	["'", '&apos;'],
+	['"', '&quot;'],
+]);
 
-function replaceTag(tag: string) {
-	return replacements[tag] || tag;
+const reverseReplacements = new Map([
+	['&amp;', '&'],
+	['&lt;', '<'],
+	['&gt;', '>'],
+	['&apos;', "'"],
+	['&quot;', '"'],
+]);
+
+export function encodeEntities(str: string) {
+	return str.replace(/[&<>'"]/g, (match) => replacements.get(match)!);
 }
 
-function escapeString(str: string) {
-	return str.replace(/[&<>'"]/g, replaceTag);
+export function decodeEntities(str: string) {
+	return str.replace(
+		/&(?:(?:quo|[gl])t|a(?:pos|mp));/g,
+		(match) => reverseReplacements.get(match)!,
+	);
 }
 
 export function html(
@@ -26,18 +37,8 @@ export function html(
 	const res: Awaitable<string>[] = [strings[0]!];
 
 	for (const [index, value] of values.entries()) {
-		if ((value as EscapedString).escaped) {
-			res.push(value.toString(), strings[index + 1]!);
-		} else {
-			res.push(escapeString(value.toString()), strings[index + 1]!);
-		}
+		res.push(encodeEntities(value.toString()), strings[index + 1]!);
 	}
 
 	return res.join('');
-}
-
-export function raw(value: string) {
-	const escapedString = new String(value) as EscapedString;
-	escapedString.escaped = true;
-	return escapedString;
 }
