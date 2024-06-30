@@ -17,7 +17,6 @@
 		"cf-typegen": "wrangler types"
 	},
 	"dependencies": {
-		"htmlparser2": "^9.1.0",
 		"itty-router": "^5.0.17"
 	},
 	"devDependencies": {
@@ -25,9 +24,12 @@
 		"@cloudflare/workers-types": "^4.20240620.0",
 		"@eslint/js": "^9.5.0",
 		"@rollup/plugin-node-resolve": "^15.2.3",
-		"@vitest/coverage-istanbul": "^1.6.0",
-		"@vitest/ui": "^1.6.0",
+		"@vitest/coverage-istanbul": "^1.5.3",
+		"@vitest/runner": "1.5",
+		"@vitest/snapshot": "1.5",
+		"@vitest/ui": "^1.5.3",
 		"crawler-user-agents": "^1.0.142",
+		"esbuild": "^0.21.5",
 		"eslint": "^9.5.0",
 		"eslint-config-prettier": "^9.1.0",
 		"prettier": "3.3.2",
@@ -42,9 +44,9 @@
 	"packageManager": "pnpm@9.3.0+sha512.ee7b93e0c2bd11409c6424f92b866f31d3ea1bef5fbe47d3c7500cdc3c9668833d2e55681ad66df5b640c61fa9dc25d546efa54d76d7f8bf54b13614ac293631",
 	"pnpm": {
 		"patchedDependencies": {
-			"@vitest/coverage-istanbul@1.6.0": "patches/@vitest__coverage-istanbul@1.6.0.patch",
 			"istanbul-lib-instrument@6.0.2": "patches/istanbul-lib-instrument@6.0.2.patch",
-			"unplugin-parcel-macros@0.0.3": "patches/unplugin-parcel-macros@0.0.3.patch"
+			"unplugin-parcel-macros@0.0.3": "patches/unplugin-parcel-macros@0.0.3.patch",
+			"@vitest/coverage-istanbul@1.5.3": "patches/@vitest__coverage-istanbul@1.5.3.patch"
 		}
 	}
 }
