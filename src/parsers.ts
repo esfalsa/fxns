@@ -83,12 +83,13 @@ export function parseProposal(xml: string, id: string) {
 
 	const proposal: PartialPick<
 		Proposal,
-		'approvals' | 'legal' | 'illegal' | 'discard'
+		'approvals' | 'legal' | 'illegal' | 'discard' | 'id'
 	> = {
 		approvals: [],
 		legal: [],
 		illegal: [],
 		discard: [],
+		id,
 	};
 
 	const proposalXML = xml.match(

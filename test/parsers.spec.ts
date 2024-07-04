@@ -84,6 +84,7 @@ describe('parseProposal', () => {
 				'vosko:waffenbrightonburg:tomoras:franconia_empire:monsmearc:zombiedolphins:tueytonia:san_lumen:tamiara:glorious_canada:simone_republic:malalonius:fachumonn:aquilea_empire:economy_stimulators:the_two_islands:bali_kingdom:hulldom:china_free_state:sneyland:the_kharkivan_cossacks:shattered_cascadia:fictia:divayo:pinkienia:gran_river:azmeny:lergotum:vangaurdis:new_federal_district:darkarion:asase_lewa:haymarket_riot:kazakhstan_rss:silibidor:lodgi:the_auglands:enslavetopia:star_forge:chesapeake_founder:potatoville:ubernech:secret_agent_99:the_divin_fist:junastria:etwepe:aserlandia:wolfs_brigade:s0uth_afr1ca:kolatis:torvien:shanlix:mark:eco-paris_reformation:island_of_avalon:free_aratinshvand:sedgistan:chaosdom:jakapil_island:qudrath:the_surviving_canadian_resistance:hemogard:upc:maurnindaia:alkhen-morrensk:the_shadow_fold:eurogoslavia:tinhampton:astrobolt'.split(
 					':',
 				),
+			id: fixtures.standardProposalID,
 		} satisfies Proposal);
 	});
 
@@ -106,6 +107,7 @@ describe('parseProposal', () => {
 				'waffenbrightonburg:vosko:franconia_empire:zombiedolphins:san_lumen:shawrmastan:tueytonia:south_china_sea_islands:fachumonn:anti-void:bali_kingdom:united_lammunist_republic:sneyland:the_kharkivan_cossacks:shattered_cascadia:fictia:hey_man_nation:thesapphire:north_nixia:the_duss:kalustyan:denathor:cedar_tree:mail_jeevas:lergotum:quetesia:lamoni:darkarion:newer_ostland:ancientania:lurusitania:impera_lunara:kazakhstan_rss:the_umns:andrw_tate:betashock:faygoer:star_forge:enslavetopia:the_auglands:chesapeake_founder:ubernech:secret_agent_99:ebonhand:wolfs_brigade:typica:sanctaria:s0uth_afr1ca:kolatis:henrylands:lennonia:kzdor:kantabria:sussywussyland:mark:zvlokiquix:eco-paris_reformation:the_unsgr_senate:island_of_avalon:koac:united_bongo_states_of_the_new_america:new_samba:jakapil_island:the_bladeist_association_of_brazil:newtexas:qudrath:roylaii:the_surviving_canadian_resistance:east_embia_albils:hemogard:new_vonderland:balkaniciana:sarvanti:alkhen-morrensk:perlito:kethania:southern_caek_saimatertoutari:kewl_kids'.split(
 					':',
 				),
+			id: fixtures.entityProposalID,
 		} satisfies Proposal);
 	});
 
@@ -121,6 +123,7 @@ describe('parseProposal', () => {
 			legal: ['legal 1', 'legal 2'],
 			proposedBy: 'nooby_mc_noobface',
 			approvals: [],
+			id: fixtures.illegalProposalID,
 		} satisfies Proposal);
 	});
 });

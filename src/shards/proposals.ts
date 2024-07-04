@@ -25,4 +25,5 @@ export type Proposal = {
 	legal: string[];
 	illegal: string[];
 	discard: string[];
+	id: string;
 };
