@@ -1,6 +1,6 @@
 import nodeResolve from '@rollup/plugin-node-resolve';
-import esbuild from 'rollup-plugin-esbuild';
 import macros from 'unplugin-parcel-macros';
+import swc from 'rollup-plugin-swc3';
 
 /** @type {import('rollup').RollupOptions} */
 export default {
@@ -13,10 +13,10 @@ export default {
 	plugins: [
 		nodeResolve(),
 		macros.rollup(),
-		esbuild({
+		swc({
 			minify: true,
-			treeShaking: true,
-			target: 'esnext',
+			jsc: { minify: { sourceMap: true } },
+			sourceMaps: true,
 		}),
 	],
 };
