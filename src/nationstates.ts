@@ -25,11 +25,15 @@ export const nationstates = {
 		return nation;
 	},
 
-	async region(region: string) {
+	async region(name: string) {
 		const body = await this.fetch(
-			endpoint({ region, q: Object.values(shardTags.region).join('+') }),
+			endpoint({ region: name, q: Object.values(shardTags.region).join('+') }),
 		).then((res) => res.text());
-		return parseRegion(body);
+		const region = parseRegion(body);
+		if (!region) {
+			throw new StatusError(404);
+		}
+		return region;
 	},
 
 	async proposal(id: string) {

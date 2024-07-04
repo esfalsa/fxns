@@ -47,7 +47,9 @@ export function parseNation(xml: string) {
 export function parseRegion(xml: string) {
 	const tagRegExp = $createTagsRegExp('region');
 
-	const region: Partial<Region> = {};
+	const region: PartialPick<Region, 'tags'> = {
+		tags: new Set<string>(),
+	};
 
 	for (const match of xml.matchAll(tagRegExp)) {
 		if (!match.groups || !match.groups.content) return;
@@ -61,8 +63,19 @@ export function parseRegion(xml: string) {
 			case 'NUMNATIONS':
 				region.numnations = Number(content);
 				break;
+			case 'FLAG':
+				region.flag = content;
+				break;
+			case 'POWER':
+				region.power = content;
+				break;
+			case 'TAG':
+				region.tags.add(content);
+				break;
 		}
 	}
+
+	return region as Region;
 }
 
 export function parseProposal(xml: string, id: string) {

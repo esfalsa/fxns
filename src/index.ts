@@ -4,6 +4,7 @@ import {
 	nationResponse,
 	nationStatesRedirectResponse,
 	proposalResponse,
+	regionResponse,
 } from './responses';
 import { canonicalize, nationstates } from './nationstates';
 import { isBot } from './user-agents';
@@ -19,6 +20,16 @@ router
 		const userAgent = headers.get('User-Agent');
 		if (!userAgent || isBot(userAgent)) {
 			return nationResponse(nationstates.nation(params.nation!));
+		}
+		return Response.redirect(
+			`https://www.nationstates.net/nation=${canonicalize(params.nation!)}`,
+			302,
+		);
+	})
+	.get('/region=:region', async ({ params, headers }) => {
+		const userAgent = headers.get('User-Agent');
+		if (!userAgent || isBot(userAgent)) {
+			return regionResponse(nationstates.region(params.region!));
 		}
 		return Response.redirect(
 			`https://www.nationstates.net/nation=${canonicalize(params.nation!)}`,

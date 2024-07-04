@@ -1,7 +1,7 @@
 import type { StatusError } from 'itty-router';
 import { error } from 'itty-router';
 import { canonicalize } from './nationstates';
-import type { Nation, Proposal } from './shards';
+import type { Nation, Proposal, Region } from './shards';
 import { html } from './escaping';
 import type { Awaitable } from './types';
 
@@ -18,13 +18,19 @@ export const htmlResponse = async (
 	});
 };
 
-function formatResponse(
-	canonicalURL: string,
-	title: string,
-	description: string,
-	image: string,
-	imageAlt: string,
-) {
+function formatResponse({
+	canonicalURL,
+	title,
+	description,
+	image,
+	imageAlt,
+}: {
+	canonicalURL: string;
+	title: string;
+	description: string;
+	image: string;
+	imageAlt: string;
+}) {
 	return html`<!doctype html>
 		<html lang="en">
 			<head>
@@ -76,13 +82,57 @@ export const nationResponse = async (nation: Awaitable<Nation>) => {
 	const description = `${admirables[0]!.charAt(0).toUpperCase() + admirables[0]!.slice(1)}, ${admirables[1]}, and ${admirables[2]} ${data.category} with ${population} ${data.demonym2plural}, notable for its ${data.notable}.`;
 
 	return htmlResponse(
-		formatResponse(
-			`https://www.nationstates.net/nation=${canonicalize(data.name)}`,
-			`The ${data.type} of ${data.name}`,
+		formatResponse({
+			canonicalURL: `https://www.nationstates.net/nation=${canonicalize(data.name)}`,
+			title: `The ${data.type} of ${data.name}`,
 			description,
-			data.flag,
-			`Flag of ${data.name}`,
-		),
+			image: data.flag,
+			imageAlt: `Flag of ${data.name}`,
+		}),
+	);
+};
+
+export const regionResponse = async (region: Awaitable<Region>) => {
+	const data = await region;
+
+	let size = '';
+	for (const sizeTag of [
+		'Gargantuan',
+		'Enormous',
+		'Large',
+		'Medium',
+		'Small',
+		'Minuscule',
+	]) {
+		if (data.tags.has(sizeTag)) {
+			size = sizeTag.toLocaleLowerCase('en-US');
+			break;
+		}
+	}
+
+	let kind = 'region';
+	for (const kindTag of [
+		'Feeder',
+		'Frontier',
+		'Class',
+		'Warzone',
+		'Restorer',
+		'Sinker',
+	]) {
+		if (data.tags.has(kindTag)) {
+			kind = kindTag.toLocaleLowerCase('en-US');
+			break;
+		}
+	}
+
+	return htmlResponse(
+		formatResponse({
+			canonicalURL: `https://www.nationstates.net/region=${canonicalize(data.name)}`,
+			title: data.name,
+			description: `A ${size} ${kind} with ${data.numnations.toLocaleString('en-US')} nations and ${data.power} regional power.`,
+			image: data.flag,
+			imageAlt: `Flag of ${data.name}`,
+		}),
 	);
 };
 
@@ -93,13 +143,13 @@ export const proposalResponse = async (
 	const data = await proposal;
 
 	return htmlResponse(
-		formatResponse(
-			`https://www.nationstates.net/page=UN_view_proposal/id=${id}`,
-			`Proposal | ${data.name}`,
-			`A ${data.category} proposal by ${data.proposedBy} created on ${data.created.toLocaleDateString('en-US')} with ${data.approvals.length} approvals.\n\nLegal: ${data.legal.length} | Illegal: ${data.illegal.length} | Discard: ${data.discard.length}`,
-			'https://www.nationstates.net/images/waflag.svg',
-			'World Assembly logo',
-		),
+		formatResponse({
+			canonicalURL: `https://www.nationstates.net/page=UN_view_proposal/id=${canonicalize(id)}`,
+			title: `Proposal | ${data.name}`,
+			description: `A ${data.category} proposal by ${data.proposedBy} created on ${data.created.toLocaleDateString('en-US')} with ${data.approvals.length} approvals.\n\nLegal: ${data.legal.length} | Illegal: ${data.illegal.length} | Discard: ${data.discard.length}`,
+			image: 'https://www.nationstates.net/images/waflag.svg',
+			imageAlt: 'World Assembly logo',
+		}),
 	);
 };
 

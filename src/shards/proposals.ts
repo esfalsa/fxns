@@ -14,7 +14,7 @@ export const proposalTags = {
 
 /**
  * A mapping from the name of each shard to its corresponding type in a parsed
- * nation object.
+ * proposal object.
  */
 export type Proposal = {
 	name: string;
