@@ -1,0 +1,61 @@
+<WA council="">
+<PROPOSALS><PROPOSAL id="nooby_mc_noobface_1720076086">
+<CATEGORY>Free Trade</CATEGORY>
+<CREATED>1720076086</CREATED>
+<DESC><![CDATA[This proposal sucks]]></DESC>
+<GENSEC>
+<DISCARD>
+<DISCARD>discard 1</DISCARD>
+<DISCARD>discard 2</DISCARD>
+</DISCARD>
+<ILLEGAL>
+<ILLEGAL>illegal 1</ILLEGAL>
+<ILLEGAL>illegal 2</ILLEGAL>
+</ILLEGAL>
+<LEGAL>
+<LEGAL>legal 1</LEGAL>
+<LEGAL>legal 2</LEGAL>
+</LEGAL>
+<LOG>
+<ENTRY>
+
+<DECISION>discard</DECISION>
+<NATION>discard 1</NATION>
+<REASON>Some reason</REASON>
+<T>1718925650</T>
+
+<DECISION>discard</DECISION>
+<NATION>discard 2</NATION>
+<REASON>Some reason</REASON>
+<T>1718925650</T>
+
+<DECISION>illegal</DECISION>
+<NATION>illegal 1</NATION>
+<REASON>Some reason</REASON>
+<T>1718925650</T>
+
+<DECISION>illegal</DECISION>
+<NATION>illegal 2</NATION>
+<REASON>Some reason</REASON>
+<T>1718925650</T>
+
+<DECISION>legal</DECISION>
+<NATION>legal 1</NATION>
+<REASON>Some reason</REASON>
+<T>1718925650</T>
+
+<DECISION>legal</DECISION>
+<NATION>legal 2</NATION>
+<REASON>Some reason</REASON>
+<T>1718925650</T>
+</ENTRY>
+</LOG>
+</GENSEC>
+<ID>nooby_mc_noobface_1720076086</ID>
+<NAME>Illegal Proposal</NAME>
+<OPTION>significant</OPTION>
+<PROPOSED_BY>nooby_mc_noobface</PROPOSED_BY>
+<APPROVALS></APPROVALS>
+</PROPOSAL>
+</PROPOSALS>
+</WA>
