@@ -1,7 +1,8 @@
-import type { ShardTag, Nation, Proposal, Region } from './shards';
-import { $createTagsRegExp } from './macros' with { type: 'macro' };
-import type { PartialPick } from './types';
 import { decodeEntities } from './escaping';
+import { $createTagsRegExp } from './macros' with { type: 'macro' };
+import { prettify } from './nationstates';
+import type { Nation, Proposal, Region, ShardTag } from './shards';
+import type { PartialPick } from './types';
 
 export function parseNation(xml: string) {
 	const tagRegExp = $createTagsRegExp('nation');
@@ -72,6 +73,15 @@ export function parseRegion(xml: string) {
 			case 'TAG':
 				region.tags.add(content);
 				break;
+			case 'DELEGATE':
+				region.delegate = content === '0' ? null : prettify(content);
+				break;
+			case 'FOUNDER':
+				region.founder = content === '0' ? null : prettify(content);
+				break;
+			case 'GOVERNOR':
+				region.governor = content === '0' ? null : prettify(content);
+				break;
 		}
 	}
 
@@ -114,7 +124,7 @@ export function parseProposal(xml: string, id: string) {
 				proposal.created = new Date(Number(content) * 1000);
 				break;
 			case 'PROPOSED_BY':
-				proposal.proposedBy = content;
+				proposal.proposedBy = prettify(content);
 				break;
 			case 'APPROVALS':
 				proposal.approvals = content.split(':');

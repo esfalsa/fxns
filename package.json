@@ -17,7 +17,8 @@
 		"cf-typegen": "wrangler types"
 	},
 	"dependencies": {
-		"itty-router": "^5.0.17"
+		"itty-router": "^5.0.17",
+		"title-case": "^4.3.1"
 	},
 	"devDependencies": {
 		"@cloudflare/vitest-pool-workers": "^0.4.7",

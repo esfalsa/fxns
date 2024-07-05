@@ -22,6 +22,9 @@ importers:
       itty-router:
         specifier: ^5.0.17
         version: 5.0.17
+      title-case:
+        specifier: ^4.3.1
+        version: 4.3.1
     devDependencies:
       '@cloudflare/vitest-pool-workers':
         specifier: ^0.4.7
@@ -2172,6 +2175,9 @@ packages:
   tinyspy@2.2.1:
     resolution: {integrity: sha512-KYad6Vy5VDWV4GH3fjpseMQ/XU2BhIYP7Vzd0LG44qRWm/Yt2WCOTicFdvmgo6gWaqooMQCawTtILVQJupKu7A==}
     engines: {node: '>=14.0.0'}
+
+  title-case@4.3.1:
+    resolution: {integrity: sha512-VnPxQ+/j0X2FZ4ceGq1oLruTLjtN5Ul4sam5ypd4mDZLm1eHwkwip1gLxqhON/j4qyTlUlfPKslE/t4NPSlxhg==}
 
   to-fast-properties@2.0.0:
     resolution: {integrity: sha512-/OaKK0xYrs3DmxRYqL/yDc+FxFUVYhDlXMhRmv3z915w2HF1tnN1omB354j8VUGO/hbRzyD6Y3sA7v7GS/ceog==}
@@ -4417,6 +4423,8 @@ snapshots:
   tinypool@0.8.4: {}
 
   tinyspy@2.2.1: {}
+
+  title-case@4.3.1: {}
 
   to-fast-properties@2.0.0: {}
 

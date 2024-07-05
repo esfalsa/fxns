@@ -125,10 +125,25 @@ export class RegionResponse extends OpenGraphResponse {
 			}
 		}
 
+		let leaders = '';
+		if (region.founder) {
+			leaders += `founded by ${region.founder}`;
+			if (region.delegate || region.governor) {
+				leaders += ' and ';
+			}
+		}
+		if (region.delegate && region.governor) {
+			leaders += `led by Delegate ${region.delegate} and Governor ${region.governor}`;
+		} else if (region.delegate) {
+			leaders += `led by Delegate ${region.delegate}`;
+		} else if (region.governor) {
+			leaders += `led by Governor ${region.governor}`;
+		}
+
 		super({
 			canonicalURL: `https://www.nationstates.net/region=${canonicalize(region.name)}`,
 			title: region.name,
-			description: `A ${size} ${kind} with ${region.numnations.toLocaleString('en-US')} nations and ${region.power} regional power.`,
+			description: `A ${size} ${kind} with ${region.numnations.toLocaleString('en-US')} nations and ${region.power.toLocaleLowerCase('en-US')} regional power, ${leaders}.`,
 			image: region.flag,
 			imageAlt: `Flag of ${region.name}`,
 		});
@@ -140,7 +155,7 @@ export class ProposalResponse extends OpenGraphResponse {
 		super({
 			canonicalURL: `https://www.nationstates.net/page=UN_view_proposal/id=${canonicalize(proposal.id)}`,
 			title: `Proposal | ${proposal.name}`,
-			description: `A ${proposal.category} proposal by ${proposal.proposedBy} created on ${proposal.created.toLocaleDateString('en-US')} with ${proposal.approvals.length} approvals.\n\nLegal: ${proposal.legal.length} | Illegal: ${proposal.illegal.length} | Discard: ${proposal.discard.length}`,
+			description: `A ${proposal.category} proposal by ${proposal.proposedBy} created on ${proposal.created.toLocaleDateString('en-US', { dateStyle: 'long' })} with ${proposal.approvals.length} approvals.\n\nLegal: ${proposal.legal.length} | Illegal: ${proposal.illegal.length} | Discard: ${proposal.discard.length}`,
 			image: 'https://www.nationstates.net/images/waflag.svg',
 			imageAlt: 'World Assembly logo',
 		});

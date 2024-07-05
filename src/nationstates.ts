@@ -1,6 +1,7 @@
 import { StatusError } from 'itty-router';
-import { shardTags } from './shards';
+import { titleCase } from 'title-case';
 import { parseNation, parseProposal, parseRegion } from './parsers';
+import { shardTags } from './shards';
 
 const base = 'https://www.nationstates.net/cgi-bin/api.cgi';
 const userAgent = 'fxns/0.1.0 (by:Esfalsa)';
@@ -62,6 +63,20 @@ export const nationstates = {
 	},
 };
 
+/**
+ * Converts a name to its canonical form in a NationStates URL.
+ * @param name the name to canonicalize
+ * @returns the canonicalized name
+ */
 export function canonicalize(name: string) {
-	return name.toLowerCase().replace(/ /g, '_');
+	return name.toLowerCase().replaceAll(' ', '_');
+}
+
+/**
+ * Prettifies a name to title case from its canonicalized form.
+ * @param name the name to prettify
+ * @returns the prettified name
+ */
+export function prettify(name: string) {
+	return titleCase(name.replaceAll('_', ' '));
 }

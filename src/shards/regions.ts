@@ -7,6 +7,9 @@ export const regionTags = {
 	FLAG: 'flag',
 	POWER: 'power',
 	TAG: 'tags',
+	FOUNDER: 'founder',
+	GOVERNOR: 'governor',
+	DELEGATE: 'delegate',
 } as const satisfies Record<string, keyof Region>;
 
 /**
@@ -19,4 +22,7 @@ export type Region = {
 	flag: string;
 	power: string;
 	tags: Set<string>;
+	founder: string | null;
+	governor: string | null;
+	delegate: string | null;
 };
