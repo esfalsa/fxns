@@ -30,7 +30,7 @@ describe('parseRegion', () => {
 	it('parses a complete response correctly', () => {
 		expect(parseRegion(fixtures.region)).toEqual({
 			name: 'the South Pacific',
-			numnations: 4875,
+			numnations: 4822,
 			power: 'Extremely High',
 			flag: 'https://www.nationstates.net/images/flags/uploads/rflags/the_south_pacific__652104.png',
 			tags: new Set([

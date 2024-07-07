@@ -17,7 +17,7 @@ function endpoint(params: Record<string, string>) {
 export const nationstates = {
 	async nation(name: string) {
 		const body = await this.fetch(
-			endpoint({ nation: name, q: Object.values(shardTags.nation).join('+') }),
+			endpoint({ nation: name, q: Object.values(shardTags.nation).join(' ') }),
 		).then((res) => res.text());
 		const nation = parseNation(body);
 		if (!nation) {
@@ -28,7 +28,7 @@ export const nationstates = {
 
 	async region(name: string) {
 		const body = await this.fetch(
-			endpoint({ region: name, q: Object.values(shardTags.region).join('+') }),
+			endpoint({ region: name, q: Object.values(shardTags.region).join(' ') }),
 		).then((res) => res.text());
 		const region = parseRegion(body);
 		if (!region) {
