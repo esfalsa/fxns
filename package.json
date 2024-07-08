@@ -17,7 +17,8 @@
 		"cf-typegen": "wrangler types"
 	},
 	"dependencies": {
-		"itty-router": "^5.0.17"
+		"itty-router": "^5.0.17",
+		"title-case": "^4.3.1"
 	},
 	"devDependencies": {
 		"@cloudflare/vitest-pool-workers": "^0.4.7",
@@ -29,19 +30,19 @@
 		"@vitest/snapshot": "1.5",
 		"@vitest/ui": "^1.5.3",
 		"crawler-user-agents": "^1.0.142",
-		"esbuild": "^0.23.0",
 		"eslint": "^9.6.0",
 		"eslint-config-prettier": "^9.1.0",
 		"prettier": "3.3.2",
 		"rollup": "^4.18.0",
-		"rollup-plugin-esbuild": "^6.1.1",
+		"rollup-plugin-swc3": "^0.11.2",
 		"typescript": "^5.5.3",
 		"typescript-eslint": "^8.0.0-alpha.39",
 		"unplugin-parcel-macros": "^0.0.3",
+		"vite": "^5.3.3",
 		"vitest": "~1.5.0",
 		"wrangler": "^3.62.0"
 	},
-	"packageManager": "pnpm@9.3.0+sha512.ee7b93e0c2bd11409c6424f92b866f31d3ea1bef5fbe47d3c7500cdc3c9668833d2e55681ad66df5b640c61fa9dc25d546efa54d76d7f8bf54b13614ac293631",
+	"packageManager": "pnpm@9.4.0+sha512.f549b8a52c9d2b8536762f99c0722205efc5af913e77835dbccc3b0b0b2ca9e7dc8022b78062c17291c48e88749c70ce88eb5a74f1fa8c4bf5e18bb46c8bd83a",
 	"pnpm": {
 		"patchedDependencies": {
 			"istanbul-lib-instrument@6.0.2": "patches/istanbul-lib-instrument@6.0.2.patch",

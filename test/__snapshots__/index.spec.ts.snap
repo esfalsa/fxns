@@ -1,0 +1,73 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`nation 404 request > matches snapshopt 1`] = `"{"status":404,"error":"Not Found"}"`;
+
+exports[`proposal opengraph request > matches snapshopt 1`] = `
+"<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<link rel="canonical" href="https://www.nationstates.net/page=UN_view_proposal/id=westinor_1718510253" />
+<title>Proposal | Commend Nasicournia</title>
+<meta name="description" content="A Commendation proposal by Westinor created on June 15, 2024 with 69 approvals.
+
+Legal: 2 | Illegal: 0 | Discard: 0" />
+<!-- required Open Graph metadata -->
+<meta property="og:title" content="Proposal | Commend Nasicournia" />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="https://www.nationstates.net/images/waflag.svg" />
+<meta property="og:url" content="https://www.nationstates.net/page=UN_view_proposal/id=westinor_1718510253" />
+<!-- optional Open Graph metadata -->
+<meta property="og:description" content="A Commendation proposal by Westinor created on June 15, 2024 with 69 approvals.
+
+Legal: 2 | Illegal: 0 | Discard: 0" />
+<meta property="og:site_name" content="NationStates" />
+<!-- structured properties Open Graph metadata -->
+<meta property="og:image:alt" content="World Assembly logo" />
+<!-- non-standard Open Graph metadata -->
+<meta property="og:ignore_canonical" content="true" />
+<!-- Twitter metadata -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@NationStates" />
+<meta name="twitter:description" content="A Commendation proposal by Westinor created on June 15, 2024 with 69 approvals.
+
+Legal: 2 | Illegal: 0 | Discard: 0" />
+<meta name="twitter:title" content="Proposal | Commend Nasicournia" />
+<meta name="twitter:image" content="https://www.nationstates.net/images/waflag.svg" />
+<meta name="twitter:image:alt" content="World Assembly logo" />
+</head>
+<body></body>
+</html>"
+`;
+
+exports[`region opengraph request > matches snapshopt 1`] = `
+"<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<link rel="canonical" href="https://www.nationstates.net/region=the_south_pacific" />
+<title>the South Pacific</title>
+<meta name="description" content="A gargantuan feeder with 4,822 nations and extremely high regional power, led by Delegate Ebonhand." />
+<!-- required Open Graph metadata -->
+<meta property="og:title" content="the South Pacific" />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="https://www.nationstates.net/images/flags/uploads/rflags/the_south_pacific__652104.png" />
+<meta property="og:url" content="https://www.nationstates.net/region=the_south_pacific" />
+<!-- optional Open Graph metadata -->
+<meta property="og:description" content="A gargantuan feeder with 4,822 nations and extremely high regional power, led by Delegate Ebonhand." />
+<meta property="og:site_name" content="NationStates" />
+<!-- structured properties Open Graph metadata -->
+<meta property="og:image:alt" content="Flag of the South Pacific" />
+<!-- non-standard Open Graph metadata -->
+<meta property="og:ignore_canonical" content="true" />
+<!-- Twitter metadata -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@NationStates" />
+<meta name="twitter:description" content="A gargantuan feeder with 4,822 nations and extremely high regional power, led by Delegate Ebonhand." />
+<meta name="twitter:title" content="the South Pacific" />
+<meta name="twitter:image" content="https://www.nationstates.net/images/flags/uploads/rflags/the_south_pacific__652104.png" />
+<meta name="twitter:image:alt" content="Flag of the South Pacific" />
+</head>
+<body></body>
+</html>"
+`;

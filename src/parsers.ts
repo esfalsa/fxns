@@ -1,7 +1,8 @@
-import type { ShardTag, Nation, Proposal, Region } from './shards';
-import { $createTagsRegExp } from './macros' with { type: 'macro' };
-import type { PartialPick } from './types';
 import { decodeEntities } from './escaping';
+import { $createTagsRegExp } from './macros' with { type: 'macro' };
+import { prettify } from './nationstates';
+import type { Nation, Proposal, Region, ShardTag } from './shards';
+import type { PartialPick } from './types';
 
 export function parseNation(xml: string) {
 	const tagRegExp = $createTagsRegExp('nation');
@@ -47,7 +48,9 @@ export function parseNation(xml: string) {
 export function parseRegion(xml: string) {
 	const tagRegExp = $createTagsRegExp('region');
 
-	const region: Partial<Region> = {};
+	const region: PartialPick<Region, 'tags'> = {
+		tags: new Set<string>(),
+	};
 
 	for (const match of xml.matchAll(tagRegExp)) {
 		if (!match.groups || !match.groups.content) return;
@@ -61,8 +64,28 @@ export function parseRegion(xml: string) {
 			case 'NUMNATIONS':
 				region.numnations = Number(content);
 				break;
+			case 'FLAG':
+				region.flag = content;
+				break;
+			case 'POWER':
+				region.power = content;
+				break;
+			case 'TAG':
+				region.tags.add(content);
+				break;
+			case 'DELEGATE':
+				region.delegate = content === '0' ? null : prettify(content);
+				break;
+			case 'FOUNDER':
+				region.founder = content === '0' ? null : prettify(content);
+				break;
+			case 'GOVERNOR':
+				region.governor = content === '0' ? null : prettify(content);
+				break;
 		}
 	}
+
+	return region as Region;
 }
 
 export function parseProposal(xml: string, id: string) {
@@ -70,12 +93,13 @@ export function parseProposal(xml: string, id: string) {
 
 	const proposal: PartialPick<
 		Proposal,
-		'approvals' | 'legal' | 'illegal' | 'discard'
+		'approvals' | 'legal' | 'illegal' | 'discard' | 'id'
 	> = {
 		approvals: [],
 		legal: [],
 		illegal: [],
 		discard: [],
+		id,
 	};
 
 	const proposalXML = xml.match(
@@ -100,7 +124,7 @@ export function parseProposal(xml: string, id: string) {
 				proposal.created = new Date(Number(content) * 1000);
 				break;
 			case 'PROPOSED_BY':
-				proposal.proposedBy = content;
+				proposal.proposedBy = prettify(content);
 				break;
 			case 'APPROVALS':
 				proposal.approvals = content.split(':');
