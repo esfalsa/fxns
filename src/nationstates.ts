@@ -1,6 +1,7 @@
 import { StatusError } from 'itty-router';
-import { shardTags } from './shards';
+import { titleCase } from 'title-case';
 import { parseNation, parseProposal, parseRegion } from './parsers';
+import { shardTags } from './shards';
 
 const base = 'https://www.nationstates.net/cgi-bin/api.cgi';
 const userAgent = 'fxns/0.1.0 (by:Esfalsa)';
@@ -16,7 +17,7 @@ function endpoint(params: Record<string, string>) {
 export const nationstates = {
 	async nation(name: string) {
 		const body = await this.fetch(
-			endpoint({ nation: name, q: Object.values(shardTags.nation).join('+') }),
+			endpoint({ nation: name, q: Object.values(shardTags.nation).join(' ') }),
 		).then((res) => res.text());
 		const nation = parseNation(body);
 		if (!nation) {
@@ -25,11 +26,15 @@ export const nationstates = {
 		return nation;
 	},
 
-	async region(region: string) {
+	async region(name: string) {
 		const body = await this.fetch(
-			endpoint({ region, q: Object.values(shardTags.region).join('+') }),
+			endpoint({ region: name, q: Object.values(shardTags.region).join(' ') }),
 		).then((res) => res.text());
-		return parseRegion(body);
+		const region = parseRegion(body);
+		if (!region) {
+			throw new StatusError(404);
+		}
+		return region;
 	},
 
 	async proposal(id: string) {
@@ -58,6 +63,20 @@ export const nationstates = {
 	},
 };
 
+/**
+ * Converts a name to its canonical form in a NationStates URL.
+ * @param name the name to canonicalize
+ * @returns the canonicalized name
+ */
 export function canonicalize(name: string) {
-	return name.toLowerCase().replace(/ /g, '_');
+	return name.toLowerCase().replaceAll(' ', '_');
+}
+
+/**
+ * Prettifies a name to title case from its canonicalized form.
+ * @param name the name to prettify
+ * @returns the prettified name
+ */
+export function prettify(name: string) {
+	return titleCase(name.replaceAll('_', ' '));
 }

@@ -1,8 +1,3 @@
-import type { Awaitable } from './types';
-
-type HTMLEscaped = { escaped: true };
-type EscapedString = string & HTMLEscaped;
-
 const replacements = new Map([
 	['&', '&amp;'],
 	['<', '&lt;'],
@@ -30,15 +25,14 @@ export function decodeEntities(str: string) {
 	);
 }
 
-export function html(
-	strings: TemplateStringsArray,
-	...values: (string | EscapedString)[]
-) {
-	const res: Awaitable<string>[] = [strings[0]!];
+function dedent(str: string) {
+	return str.replace(/\n^\s+/gm, '\n');
+}
 
+export function html(strings: TemplateStringsArray, ...values: string[]) {
+	let res = dedent(strings[0]!);
 	for (const [index, value] of values.entries()) {
-		res.push(encodeEntities(value.toString()), strings[index + 1]!);
+		res += encodeEntities(value.toString()) + dedent(strings[index + 1]!);
 	}
-
-	return res.join('');
+	return res;
 }
